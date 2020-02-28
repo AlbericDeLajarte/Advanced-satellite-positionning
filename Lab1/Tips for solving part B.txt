@@ -1,0 +1,12 @@
+- plot the RINEX ? 
+- filter satellite we want
+- then filter with time
+- then create functions of slides 
+Matlab functions can return several parameters
+
+ECI: the Earth is moving in this reference. So if we
+display the motion of the satellites, it will be on
+a place with a small drift at each ellipse. Bad co-
+verage of the poles. 
+
+ECEF: the Earth is fixed in this reference. 
