@@ -1,4 +1,4 @@
-function [x_orbit, y_orbit] = posGPS(t, t_oe, sqrt_a, e, M_0)
+function [x_orbit, y_orbit] = sat_coordinates(t, t_oe, sqrt_a, e, M_0)
     format long
         
     % Time elapsed since the ephemeride
