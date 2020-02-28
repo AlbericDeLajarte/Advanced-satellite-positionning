@@ -17,6 +17,7 @@ for t = t_start:t_end
 end
 figure(1);
 plot3(t_start:t_end,x,y);
+xlabel("Time [s]")
 ylabel("X coordinate [m]");
 zlabel("Y coordinate[m] ");
 title("Movement of the satellite")
