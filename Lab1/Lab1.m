@@ -3,7 +3,7 @@ a = (.544062105942E+04)^2; % [meters]
 e = .404827296734E-04;
 M_o = .194850072201E+01; % [radians]
 
-[x0, y0] = posGPS(225445, t_oe, a, e, M_o);
+[x0, y0] = posGPS(225445, t_oe, a, e, M_o)
 
 t_start = 174600;
 t_end = 225000;
@@ -17,6 +17,6 @@ for t = t_start:t_end
 end
 figure(1);
 plot3(t_start:t_end,x,y);
-ylabel("X coordinate");
-zlabel("Y coordinate");
+ylabel("X coordinate [m]");
+zlabel("Y coordinate[m] ");
 title("Movement of the satellite")
