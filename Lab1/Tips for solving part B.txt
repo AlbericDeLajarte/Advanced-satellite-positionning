@@ -1,6 +1,12 @@
 - plot the RINEX ? 
-- filter satellite we want
-- then filter with time
+- filter satellites we want
+- then filter with time: take the closest time to the 
+Time of week given (TOW): 225445.0 s, closest in the
+past!
+From this, we will get the correction terms. 
+Run function [ephm info units] = getrinexephGal
+then go to info variable to see which rows we should
+look at to get the correction terms. 
 - then create functions of slides 
 Matlab functions can return several parameters
 
