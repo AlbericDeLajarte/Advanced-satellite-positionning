@@ -6,4 +6,4 @@ t = 225445.0; % Time of week [s]
 we=7292115e-11; % Earth's angular velocity, [rad/s]
 
 % ECI and ECEF coordinates: 
-[eci_matrix, ecef_matrix] = eci_and_ecef_coordinates(sat_nums, t, we);
+[eci_matrix, ecef_matrix] = eci_and_ecef_coordinates(t, sat_nums, we);
