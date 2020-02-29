@@ -1,4 +1,4 @@
-function [eci_matrix, ecef_matrix] = eci_and_ecef_coordinates([t, sat_nums, we])
+function [eci_matrix, ecef_matrix] = eci_and_ecef_coordinates(t, sat_nums, we)
 
 [parsed_ephm, info] = parse_matrix(t, sat_nums);
 [toe_index, M0_index, sqrta_index, deltan_index,...
@@ -37,8 +37,8 @@ for i=1:length(sat_nums)
    
     % geocentric coordinates
     [x_eci, y_eci, z_eci] = geocentric_coordinates(r, phi, eci_omega, inc);
-    eci_matrix(i,:) = [x_eci, y_eci, z_eci]
+    eci_matrix(i,:) = [x_eci, y_eci, z_eci];
     [x_ecef, y_ecef, z_ecef] = geocentric_coordinates(r, phi, ecef_omega, inc);
-    ecef_matrix(i,:) = [x_ecef, y_ecef, z_ecef]
+    ecef_matrix(i,:) = [x_ecef, y_ecef, z_ecef];
 end
 
