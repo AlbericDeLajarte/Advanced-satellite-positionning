@@ -5,7 +5,7 @@ function [x_orbit, y_orbit] = posGPS(t, t_oe, a, e, M_0)
     t_i = t-t_oe;
     
     % Mean anomaly
-    M = compute_mean_anomaly(M_0, a, t_i);
+    M = compute_mean_anomaly(M_0, a, t_i, 0);
 
     % Eccentric anomaly
     E = compute_eccentric_anomaly(M, e);
