@@ -21,7 +21,7 @@ for sat_index = 1:length(sat_nums)
     % the closest to input t_oe (and before!)
     for i = 1:length(sat_column_indices)
         time_diff =  t_oe - ephm(toe_index, sat_column_indices(i));
-        if time_diff < closest && time_diff > 0
+        if time_diff < closest && time_diff >= 0
             closest = time_diff;
             closest_index = sat_column_indices(i);
         end
