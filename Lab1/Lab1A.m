@@ -27,7 +27,7 @@ apo = a*(1+e);
 peri = a*(1-e);
 
 % Plot
-%{
+
 figure(1);
 plot3(t_start:t_end,x,y);
 xlabel("Time [s]")
@@ -40,4 +40,3 @@ plot(t_start:t_end, x, t_start:t_end, y);
 xlabel("Time [s]");
 ylabel("X/Y coordinate [m] ");
 legend("X position", "Y position");
-%}

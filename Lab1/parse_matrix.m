@@ -1,8 +1,11 @@
 function [parsed_matrix, info] = parse_matrix(t_oe, sat_nums)
+%% This function parses the ephemerides: keep one set of parameters
+% per satellite asked
+%%
 % Read ephemerid file 
 [ephm, info, units] = getrinexephGal();
 
-% Keep only satellites asked:
+% Take all satellite ids:
 sat_nums_ephemerides = ephm(1,:); 
 
 toe_index = find(strcmp(info, 'toe'));
@@ -17,7 +20,7 @@ for sat_index = 1:length(sat_nums)
     sat_column_indices = find(sat_nums_ephemerides == sat_nums(sat_index));
     closest = Inf;
     closest_index = 0;
-    % Then we loop over those colums, and check the time of week that is
+    % Then we loop over those columns, and check the time of week that is
     % the closest to input t_oe (and before!)
     for i = 1:length(sat_column_indices)
         time_diff =  t_oe - ephm(toe_index, sat_column_indices(i));

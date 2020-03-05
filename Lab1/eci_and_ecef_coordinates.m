@@ -1,10 +1,15 @@
 function [eci_matrix, ecef_matrix] = eci_and_ecef_coordinates(t, sat_nums, we)
+%% This function computes the coordinates in ECi and ECEF 
+ % reference frames for a list of satellite ids.
 
-format long
+%%
+format long g
 
 % First we parse the ephemerides: we only keep one set of parameters for 
 % each satellite asked
 [parsed_ephm, info] = parse_matrix(t, sat_nums);
+
+% Then we find the indices of the relevant parameters 
 [toe_index, M0_index, sqrta_index, deltan_index,...
     ecc_index, omega_index, cwc_index, cws_index, crc_index, ...
     crs_index, i0_index, idot_index, cic_index, cis_index, ...

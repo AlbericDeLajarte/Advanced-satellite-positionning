@@ -14,7 +14,7 @@ function [x_orbit, y_orbit] = posGPS(t, t_oe, a, e, M_0)
     f = compute_true_anomaly(E, e);
     
     % Radial distance
-    r = a*(1-e*cos(E));
+    r = compute_radial_dist(a, e, E, 0,0,0,0);
     
     % Transform polar to cartesian coordinates
     x_orbit = r*cos(f);
