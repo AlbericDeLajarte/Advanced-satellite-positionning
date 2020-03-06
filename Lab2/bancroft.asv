@@ -1,0 +1,3 @@
+function [] = Bancroft(sat_nums, sat_nums2)
+
+[ephm, info, units] = getrinexephGal();
