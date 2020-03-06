@@ -1,0 +1,13 @@
+-4 first satellites for xB, 1
+-7 other satellite for xB, 1
+Get them thanks to Bancroft
+
+1) SV clock error dtk = rho*(tGPS, k - taui,k)
+- calculate the corrected Pk = P' + c*dt
+2) Calculate sat position 
+sat coordinates xk for time tk which is = reception time
+minus transmission time = tau = Pk/c
+What we find is in ECEF
+3) Then correct position,
+P = P' + dt'*c
+4) Correct SV position for the Earth rotation. 
