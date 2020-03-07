@@ -2,6 +2,9 @@
 -7 other satellite for xB, 1
 Get them thanks to Bancroft
 
+dtk = erreurs de plein de trucs!
+
+
 1) SV clock error dtk = rho*(tGPS, k - taui,k)
 - calculate the corrected Pk = P' + c*dt
 2) Calculate sat position 
@@ -11,3 +14,61 @@ What we find is in ECEF
 3) Then correct position,
 P = P' + dt'*c
 4) Correct SV position for the Earth rotation. 
+-> rotation necessary 
+5)
+6) x = Bancroft(BT)
+
+
+receiver je ne sais pas où il est, au max il est au
+centre de la terre
+
+Réexplication de l'assistant.
+Last week, pos of satellite. 
+1) We have pseudorange in text files, correct them with
+dtk. Correct only once! How to compute dtk? To compute 
+dtk you need travel time. But you don't know the travel
+time. Just rk/c ? 
+
+
+dtk = formule avec ti et toe, ... 
+ti = dtk-toe-correction-...
+donc dtk 
+ti init à P/c. 
+(Puis ti = dtk + P/c ? 
+Puis dtk = ... recalculé de nouveau)
+
+->output = corrected pseudoranges. 
+On n'y touche plus. 
+
+[Reexplication: première estimation de ti avec P/c 
+-> on peu calculer dtk
+Deuxième estimation en utilisant P/c - dtk = new_dti
+(quel P utiliser là déjà corriger?)
+-> nouveau dtk
+-> then correction pseudorange: P = P' + c*dtk]
+
+2) Corrected pseudoranges = inputs to calculate 
+propagation time tau, and then we compute sat 
+position, using given time of week - propagation time
+
+3) Correct sat position with 0.072 factor avec rotation 
+matrix
+->output: new position 
+
+(Albé: application rotation à la position d'un angle
+= vitesse angulaire terre x temps max, temps max 
+qui est de 0.072s) 
+
+4) Puis bancroft, on a approximation position receiver? 
+
+5) Puis on recalcule une correction avec rk/c = delta ...
+(Comme on a la geometric dist to each sat, divided by 
+speed of light -> you have a new dist)
+
+5) Puis re bancroft? 
+
+Une ou 2 fois Bancroft? 
+
+
+
+
