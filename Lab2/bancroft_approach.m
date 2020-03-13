@@ -1,4 +1,4 @@
-function [] = bancroft(t, sat_nums, we, pseudoranges)
+function [] = bancroft_approach(t, sat_nums, we, pseudoranges)
 % Speed of light
 c = 299792458; %[m/s]
 
@@ -6,7 +6,7 @@ c = 299792458; %[m/s]
 % Propagation time tau
 % ???
 % say for now:
-corrected_pseudoranges = pseudoranges;
+corrected_pseudoranges = values(pseudoranges);
 
 %% Computation of ECI and ECEF coordinates of given satellites:
 % should we change t??? t = t - tau
@@ -20,7 +20,7 @@ corrected_ecef = correction_Earth_rotation(ecef_matrix, worst_delay);
 if len(sat_nums) == 4
     % r is a vector containing receiver coordinates
     % b is the receiver clock bias c*dti
-    [r, b] = bancroft_4_Sat(corrected_ecef, corrected_pseudoranges);
+    [r, b] = bancroft_4_Sat(corrected_ecef, corrected_pseudoranges');
 
 
     %% Now we can compute a better range for more accurate Earth rotation correction:
@@ -29,6 +29,9 @@ if len(sat_nums) == 4
 
 
     %% Re-apply Bancroft:
-else:
+    [r, b] = bancroft_4_Sat(corrected_ecef, corrected_pseudoranges');
+else
+    
+end
 
 

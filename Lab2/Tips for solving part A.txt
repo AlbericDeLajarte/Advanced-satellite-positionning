@@ -47,6 +47,7 @@ Deuxième estimation en utilisant P/c - dtk = new_dti
 -> nouveau dtk
 -> then correction pseudorange: P = P' + c*dtk]
 
+
 2) Corrected pseudoranges = inputs to calculate 
 propagation time tau, and then we compute sat 
 position, using given time of week - propagation time
