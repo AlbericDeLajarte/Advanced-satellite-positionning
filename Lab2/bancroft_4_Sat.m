@@ -1,5 +1,6 @@
 function [r, b] = bancroft_4_Sat(r_k, P_k)
-
+%% Comment for Alberic: maybe use loop for alpha to generalize to any number of sat ?
+%% I took your code and did this in bancroft_overdetermined 
 % define matrces
 B = [r_k, P_k];
 e = [1, 1, 1, 1];
@@ -46,6 +47,7 @@ else
     
 end
 %}
-% replace with this if it is ok for Albericccc:
+%% Comment for Alberic: replace with this if it is ok for Albericccc:
+%% I just put your code in another file
 [r, b] = solve_equation(B,alpha, e);
 end

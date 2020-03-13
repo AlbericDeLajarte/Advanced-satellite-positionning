@@ -23,12 +23,11 @@ if len(sat_nums) == 4
     [r, b] = bancroft_4_Sat(corrected_ecef, corrected_pseudoranges');
 
 
-    %% Now we can compute a better range for more accurate Earth rotation, for each satellite k
-    for i = 1:len(sat_nums)
-        range = sqrt((r(1)-ecef_matrix(i,1))^2 + (r(2)-ecef_matrix(i,2))^2 + (r(3)-ecef_matrix(i,3))^2);
-        delay = range/c;
-        corrected_ecef(i, :) = correction_Earth_rotation(corrected_ecef, delay);
-    end
+    %% Now we can compute a better range for more accurate Earth rotation,
+    
+    range = sqrt((r(0)
+    delay = ;
+    corrected_ecef = correction_Earth_rotation(corrected_ecef, delay);
 
 
     %% Re-apply Bancroft:
