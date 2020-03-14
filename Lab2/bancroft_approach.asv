@@ -2,11 +2,23 @@ function [] = bancroft_approach(t, sat_nums, we, pseudoranges)
 % Speed of light
 c = 299792458; %[m/s]
 
-%% Correction of pseudoranges with SV clock error dtk: 
+%% Correction of pseudoranges with SV clock error dtk:
+dtks = zeros(len(sat_nums));
+taus
+% To compute a dtk we need ti and toe
+% To compute ti 
+for i = 1:len(sat_nums)
+    af0 = ;
+    af1 = ;
+    af2 = ;
+    toe = ;
+    ti = ;
+    dtks(i) = af0+af1(ti-toe)+ af2(ti-toe)^2 ;
+end
+
 % Propagation time tau
 % ???
-% say for now:
-corrected_pseudoranges = values(pseudoranges);
+corrected_pseudoranges = values(pseudoranges) + dtks;
 
 %% Computation of ECI and ECEF coordinates of given satellites:
 % should we change t??? t = t - tau
@@ -23,11 +35,12 @@ if len(sat_nums) == 4
     [r, b] = bancroft_4_Sat(corrected_ecef, corrected_pseudoranges');
 
 
-    %% Now we can compute a better range for more accurate Earth rotation,
-    
-    range = sqrt((r(0)
-    delay = ;
-    corrected_ecef = correction_Earth_rotation(corrected_ecef, delay);
+    %% Now we can compute a better range for more accurate Earth rotation, for each satellite k
+    for i = 1:len(sat_nums)
+        range = sqrt((r(1)-ecef_matrix(i,1))^2 + (r(2)-ecef_matrix(i,2))^2 + (r(3)-ecef_matrix(i,3))^2);
+        delay = range/c;
+        corrected_ecef(i, :) = correction_Earth_rotation(corrected_ecef, delay);
+    end
 
 
     %% Re-apply Bancroft:

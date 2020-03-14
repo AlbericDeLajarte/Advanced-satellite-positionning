@@ -5,7 +5,7 @@ Get them thanks to Bancroft
 dtk = erreurs de plein de trucs!
 
 
-1) SV clock error dtk = rho*(tGPS, k - taui,k)
+1) SV clock error dtk = rho*(tGPS, i - taui,k)
 - calculate the corrected Pk = P' + c*dt
 2) Calculate sat position 
 sat coordinates xk for time tk which is = reception time
