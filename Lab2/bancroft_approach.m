@@ -1,4 +1,4 @@
-function [] = bancroft_approach(t, sat_nums, we, pseudoranges)
+function [r, b, ecef_matrix] = bancroft_approach(t, sat_nums, we, pseudoranges)
 % Speed of light
 c = 299792458; %[m/s]
 
@@ -44,7 +44,7 @@ if len(sat_nums) == 4
 
     %% Now we can compute a better range for more accurate Earth rotation, for each satellite k
     for i = 1:len(sat_nums)
-        range = sqrt((r(1)-ecef_matrix(i,1))^2 + (r(2)-ecef_matrix(i,2))^2 + (r(3)-ecef_matrix(i,3))^2);
+        range = compute_range(r, ecef_matrix(i, :));   
         delay = range/c;
         corrected_ecef(i, :) = correction_Earth_rotation(corrected_ecef, delay);
     end
