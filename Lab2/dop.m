@@ -10,3 +10,5 @@ pdop = sqrt(trace_enu);
 hdop = sqrt(trace_enu - matrix_enu(3,3));
 vdop = sqrt(Qxx(4,4)^2);
 gdop = sqrt(trace_enu + Qxx(4,4)^2);
+
+end

@@ -4,7 +4,7 @@ function [deltas, A] = linearized_approach(r_0, b_0, sat_nums, pseudoranges, ece
 % b_0 is a scalar, approximate receiver clock bias
 
 
-%% Construction of matrix A and matrix l'
+%% Construction of matrix A and matrix l
 nb_of_observations = len(sat_nums);
 A = zeros(nb_of_observations, 3);
 l = zeros(nb_of_observations, 1);
@@ -24,6 +24,6 @@ A = [A, ones(nb_of_observations, 1)];
 %% Solve system:
 deltas = (A'*A)\(A'*l');
 
-
+end
 
 

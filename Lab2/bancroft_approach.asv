@@ -25,21 +25,10 @@ for i = 1:len(sat_nums)
     dtks(i) = af0+af1(ti-toe)+ af2(ti-toe)^2 ;
 end
 % First correction ? 
-corrected_pseudoranges = values(pseudoranges) + dtks*c; % P = P' +c*dtk 
-tis = corrected_pseudoranges/c - dtks;
-for i = 1:len(sat_nums)
-    % we can find af0, af1, af2 and toe in the ephemerides 
-    af0 = parsed_ephm(2,i);
-    af1 = parsed_ephm(3,i);
-    af2 = parsed_ephm(4,i);
-    toe = parsed_ephm(13,i);
-    ti = tis(i);
-    dtks(i) = af0+af1(ti-toe)+ af2(ti-toe)^2 ;
-end
-corrected_pseudoranges = values(pseudoranges) + dtks*c; % P = P' +c*dtk
 % Propagation time tau
 % ??? init à 0.072 
-
+% We reiterate, with ti = P/c - dtk (P corrected ?)
+corrected_pseudoranges = values(pseudoranges) + dtks*c;
 
 %% Computation of ECI and ECEF coordinates of given satellites:
 % we compute for time tk which is = reception time - transmission time 

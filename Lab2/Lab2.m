@@ -14,9 +14,9 @@ pseudoranges_all = containers.Map(SatNumsSet,pseudoRangesSet);
 
 % A bit ugly
 pseudoranges_7_sats = remove(pseudoranges_all, 3);
-pseudoranges_4_sats = remove(pseudoranges_all, 11);
-pseudoranges_4_sats = remove(pseudoranges_all, 24);
-pseudoranges_4_sats = remove(pseudoranges_all, 25);
+pseudoranges_4_sats = remove(pseudoranges_7_sats, 11);
+pseudoranges_4_sats = remove(pseudoranges_4_sats, 24);
+pseudoranges_4_sats = remove(pseudoranges_4_sats, 25);
 
 %% Lab 2.A: find location of Galileo receiver's antenna using Bancroft algorithm
 [r_4_sats, b_4_sats, ecef_4_sats] = bancroft_approach(t, sat_nums_4_sats, we, pseudoranges_4_sats);
@@ -28,6 +28,10 @@ pseudoranges_4_sats = remove(pseudoranges_all, 25);
 %%%%%% WHICH PSEUDORANGES TO USE ? %%%%%%%%%
 [deltas_4_sats, A_4_sats] = linearized_approach(r_4_sats, b_4_sats, pseudoranges_4_sats, ecef_4_sats);
 [deltas_7_sats, A_7_sats] = linearized_approach(r_7_sats, b_7_sats, pseudoranges_7_sats, ecef_7_sats);
+
+% corriger avec les deltas 
+r_4_sats_corrected = r_4_sats + deltas_4_sats;
+
 
 %% Lab 2.B2: Dilution of precision
 % Qxx is the confidence matrix 
