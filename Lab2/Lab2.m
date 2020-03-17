@@ -19,8 +19,8 @@ pseudoranges_4_sats = remove(pseudoranges_4_sats, 24);
 pseudoranges_4_sats = remove(pseudoranges_4_sats, 25);
 
 %% Lab 2.A: find location of Galileo receiver's antenna using Bancroft algorithm
-[r_4_sats, b_4_sats, ecef_4_sats] = bancroft_approach(t, sat_nums_4_sats, we, pseudoranges_4_sats);
-[r_7_sats, b_7_sats, ecef_7_sats] = bancroft_approach(t, sat_nums_7_sats, we, pseudoranges_7_sats);
+[r_4_sats, b_4_sats, ecef_4_sats, params_4_sats] = bancroft_approach(t, sat_nums_4_sats, we, pseudoranges_4_sats);
+[r_7_sats, b_7_sats, ecef_7_sats, params_7_sats] = bancroft_approach(t, sat_nums_7_sats, we, pseudoranges_7_sats);
 
 %% Questions //TODO
 
@@ -38,8 +38,8 @@ r_4_sats_corrected = r_4_sats + deltas_4_sats;
 Qxx_4_sats = inv(A_4_sats'*pseudoranges_4_sats*A_4_sats);
 Qxx_7_sats = inv(A_7_sats'*pseudoranges_7_sats*A_7_sats);
 
-[pdop_4_sats, hdop_4_sats, vdop_4_sats, gdop_4_sats] = dop(Qxx_4_sats);
-[pdop_7_sats, hdop_7_sats, vdop_7_sats, gdop_7_sats] = dop(Qxx_7_sats);
+[pdop_4_sats, hdop_4_sats, vdop_4_sats, gdop_4_sats] = dop(Qxx_4_sats, params_4_sats);
+[pdop_7_sats, hdop_7_sats, vdop_7_sats, gdop_7_sats] = dop(Qxx_7_sats, params_7_sats);
 
 %% Questions //TODO
 

@@ -1,4 +1,4 @@
-function [r, b, ecef_matrix] = bancroft_approach(t, sat_nums, we, pseudoranges)
+function [r, b, ecef_matrix, parameters] = bancroft_approach(t, sat_nums, we, pseudoranges)
 % Speed of light
 c = 299792458; %[m/s]
 
@@ -44,7 +44,7 @@ corrected_pseudoranges = values(pseudoranges) + dtks*c; % P = P' +c*dtk
 %% Computation of ECI and ECEF coordinates of given satellites:
 % we compute for time tk which is = reception time - transmission time 
 tk = ti - tau;
-[~, ecef_matrix] = eci_and_ecef_coordinates(tk, sat_nums, we);
+[~, ecef_matrix, parameters] = eci_and_ecef_coordinates(tk, sat_nums, we);
 % ecef_matrix is a len(sat_nums) x 3 matrix
 
 %% Correction for Earth rotation: 

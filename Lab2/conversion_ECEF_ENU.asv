@@ -1,0 +1,12 @@
+function [enu_coord] = conversion_ECEF_ENU(phi, lambda, ecef_coord)
+% ecef_coord is a column vecotr of coordinates expressed in ECEF frame
+R1 = [1       0        0;
+      0   cos(alpha1)  sin(alpha1);
+      0   -sin(alpha1) 
+R3 = []
+
+enu_coord = R*ecef_coord;
+end
+
+
+  
