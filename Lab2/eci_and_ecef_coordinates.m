@@ -1,4 +1,4 @@
-function [eci_matrix, ecef_matrix, parameters] = eci_and_ecef_coordinates(t, sat_nums, we)
+function [eci_matrix, ecef_matrix, parsed_ephm, info] = eci_and_ecef_coordinates(t, sat_nums, we)
 %% This function computes the coordinates in ECi and ECEF 
  % reference frames for a list of satellite ids.
 
@@ -18,7 +18,6 @@ format long g
 % The following matrices will contain the final coordinates in eci and ecef
 eci_matrix = zeros(length(sat_nums), 3);
 ecef_matrix = zeros(length(sat_nums), 3);
-parameters = zeros(length(sat_nums), 10);
 
 for i=1:length(sat_nums)
     
@@ -51,6 +50,5 @@ for i=1:length(sat_nums)
     eci_matrix(i,:) = [x_eci, y_eci, z_eci];
     [x_ecef, y_ecef, z_ecef] = geocentric_coordinates(r, phi, ecef_omega, inc);
     ecef_matrix(i,:) = [x_ecef, y_ecef, z_ecef];
-    parameters(i,:) = [t_i, M, i, f, w, phi, r, inc, eci_omega, ecef_omega];
 end
 

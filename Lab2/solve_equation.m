@@ -1,7 +1,8 @@
 function [r, b] = solve_equation(B, alpha, e)
 % Create temporary variable for speed
-temp1 = B\e;
-temp2 = B\alpha;
+disp(size(e))
+temp1 = B*e;
+temp2 = B*alpha;
 
 % find coefficient of quadratic equation ax^2 + bx + c = 0
 a = lorentz_product(temp1, temp1);
@@ -16,9 +17,9 @@ lambda2 = (-b - sqrt(b^2 - 4*a*c))/(2*a);
 M = eye(4,4);
 M(4,4) = -1;
 
-result1 = M*B\(lambda1*e + alpha);
-result2 = M*B\(lambda2*e + alpha);
-
+result1 = (M)*(B*(lambda1*e + alpha));
+result2 = (M)*(B*(lambda2*e + alpha));
+disp(' we have the 2 results')
 % Keep the solution which is closer to Earth Center (Receiver is on the ground, not in Space)
 if norm(result1(1:3)) > norm(result2(1:3))
     

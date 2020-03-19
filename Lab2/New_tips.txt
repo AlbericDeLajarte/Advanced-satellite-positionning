@@ -1,0 +1,39 @@
+- complex number: incorrect Lorentz product
+- bancroft not related to travel time 
+- 
+
+1)first correct pseudoranges
+2)than compute sat pos
+3)than correct with travel time 0.072 -> inputs for firt iteration.
+This gives first approximation of receiver 
+
+4)Then geometric dist and sat pos -> travel time for each sat 
+-> new set of satellite coordinates then second iteration
+
+
+My questions: 
+-methodology for getting the dtk? 
+Si on utilise les éphémérides, pour quel temps regarder ? Closest to
+the tow given? 
+
+dtk : function of the travel time 
+tx time - toe
+
+dans la formule: time at the transmitter= time when sat sends signal
+= tow - tau. Tau is travel time. First approx: P/c
+
+In formula: the ti is the time of week
+tow(225455) - tau 
+-> first dtk. Can stop there! 
+But what he suggests: this dtk is a time diff. use it again to find
+a new dtk. Substract tow - tau(P'/c) - dtk -> new travel time tGPS
+-> compute new dtk
+
+
+To see if correct, plug 6 satellites, compute receiver coord function
+
+26159727.5930285: pseudorange corrected for sat 2  
+The difference when you rotate is 100m
+
+15272297.1319803 -> first satellite (sat 2), coordinate X, without Earth rotation corr
+15272181.8592088

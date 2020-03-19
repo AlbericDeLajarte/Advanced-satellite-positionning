@@ -1,25 +1,25 @@
 function [deltas, A] = linearized_approach(r_0, b_0, sat_nums, pseudoranges, ecef_matrix)
 %% Arguments:
-% r_0 = [X0, Y0, Z0] is the receiver approximate coordinates
+% r_0 = [X0, Y0, Z0]T is the receiver approximate coordinates
 % b_0 is a scalar, approximate receiver clock bias
 
 
 %% Construction of matrix A and matrix l
-nb_of_observations = len(sat_nums);
-A = zeros(nb_of_observations, 3);
-l = zeros(nb_of_observations, 1);
+k = length(sat_nums);
+A = zeros(k, 3);
+l = zeros(k, 1);
 % concat:
-r0 = [r_0, b_0];
+r0 = [r_0', b_0];
 
-for i = 1:nb_of_observations
-    rho = compute_range(ecef_matrix(i,:), r0);
-    A(i,:) = -(ecef_matrix(i,:) - r0);
+for i = 1:k
+    disp(r_0')
+    rho = compute_range(ecef_matrix(i,:), r_0');
+    A(i,:) = -(ecef_matrix(i,:) - r_0');
     A(i,:)= A(i,:)/rho;
-    % for l, take bias into account? 
-    P0 = rho - b_0;
+    P0 = rho;
     l(i) = pseudoranges(i) - P0;
 end
-A = [A, ones(nb_of_observations, 1)];
+A = [A, ones(k, 1)];
 
 %% Solve system:
 deltas = (A'*A)\(A'*l');
