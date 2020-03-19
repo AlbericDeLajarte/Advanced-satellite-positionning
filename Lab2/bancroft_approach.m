@@ -1,13 +1,12 @@
-function [r, b, ecef_matrix, corrected_pseudoranges] = bancroft_approach(tow, sat_nums, we, pseudoranges)
+function [r, b, corrected_ecef, corrected_pseudoranges] = bancroft_approach(tow, sat_nums, we, pseudoranges)
 % Speed of light
 c = 299792458; %[m/s]
-k = length(sat_nums)
-disp(pseudoranges)
+k = length(sat_nums);
 %% Correction of pseudoranges with SV clock error dtk:
 dtks = zeros(1,k);
 taus = zeros(1,k);
 % Approximation of the travel times:
-taus = pseudoranges/c
+taus = pseudoranges/c;
 
 % Computation of ECI and ECEF coordinates of given satellites:
 [~, ecef_matrix, parsed_ephm, info] = eci_and_ecef_coordinates(tow, sat_nums, we);
@@ -51,13 +50,12 @@ corrected_ecef = zeros(k, 3); %k x 3 matrix
 for i = 1:k
    corrected_ecef(i, :) = correction_Earth_rotation(ecef_matrix(i,:)', worst_delay)'; 
 end
-ecef_matrix(1,:)
-corrected_ecef(1,:)
-
+disp('ecef corrected with Earth rotation, using worst delay = ')
+disp(corrected_ecef)
 %% Apply Bancroft
 % r is a vector containing receiver coordinates
 % b is the receiver clock bias c*dti
-[r, b] = bancroft(corrected_ecef, corrected_pseudoranges')
+[r, b] = bancroft(corrected_ecef, corrected_pseudoranges');
 
 %% Now we can compute a better range (geometric distance) for more accurate Earth rotation, for each satellite k
 for i = 1:k
@@ -65,9 +63,9 @@ for i = 1:k
     delay = range/c;
     corrected_ecef(i, :) = correction_Earth_rotation(ecef_matrix(i,:)', delay)';
 end
-
+disp('ecef corrected with Earth rotation, using smaller delay = ')
+disp(corrected_ecef)
 %% Re-apply Bancroft:
-disp('we reapply')
 [r, b] = bancroft(corrected_ecef, corrected_pseudoranges')
 
 end
