@@ -1,7 +1,7 @@
 function [r, b] = bancroft(r_k, P_k)
 % r_k : k x 3 matrix, k being the number of satellites 
 % P_k : k x 1  matrix
-B = [r_k, P_k]; %k x 4 matrix
+B = [r_k, P_k]; % k x 4 matrix
 [k, ~] = size(r_k); 
 new_B = zeros(k,4);
 e = ones([1, k])';

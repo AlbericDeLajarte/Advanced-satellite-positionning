@@ -1,4 +1,5 @@
 %% Lab 2
+addpath("../Lab1");
 %% General informations
 sat_nums_4_sats = [2 5 8 12];
 sat_nums_7_sats = [2 5 8 11 12 24 25];

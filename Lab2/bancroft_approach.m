@@ -44,7 +44,7 @@ corrected_pseudoranges = pseudoranges + dtks*c
 
 
 %% Correction for Earth rotation: 
-worst_delay = 0.072; %s
+worst_delay = 0.072; % [s]
 % first argument of correction_Earth_rotation must have columns of coord
 
 corrected_ecef = zeros(k, 3); %k x 3 matrix

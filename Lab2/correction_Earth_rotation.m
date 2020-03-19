@@ -6,5 +6,5 @@ we = 7.2921151467e-5;
 theta = delay*we;
 
 % R3= rotation matrix around the Z axis (axis perpendicular to the equator in ECEF coordiante)
-X_corr = R2(theta)*X;
+X_corr = R3(theta)*X;
 end
