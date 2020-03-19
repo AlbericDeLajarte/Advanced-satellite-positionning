@@ -9,6 +9,7 @@ taus = zeros(1,k);
 taus = pseudoranges/c;
 
 % Computation of ECI and ECEF coordinates of given satellites:
+%%%%%% CHANGE HERE THE TIME FOR WHICH WE COMPUTE COORDINATES %%%%%%%%%%
 [~, ecef_matrix, parsed_ephm, info] = eci_and_ecef_coordinates(tow, sat_nums, we);
 % parsed_ephm  is a len(ephemerides) x len(sat_nums) matrix 
 % ecef_matrix is a len(sat_nums) x 3 matrix
@@ -50,6 +51,8 @@ corrected_ecef = zeros(k, 3); %k x 3 matrix
 for i = 1:k
    corrected_ecef(i, :) = correction_Earth_rotation(ecef_matrix(i,:)', worst_delay)'; 
 end
+disp('ecef without Earth correction = ')
+disp(ecef_matrix)
 disp('ecef corrected with Earth rotation, using worst delay = ')
 disp(corrected_ecef)
 %% Apply Bancroft
