@@ -13,12 +13,12 @@ taus = zeros(1,k);
 % Approximation of the travel times:
 taus = pseudoranges/c;
 
-% Read the ephemerides
+% parsed_ephm  is a len(ephemerides) x len(sat_nums) matrix 
+% ecef_matrix is a len(sat_nums) x 3 matrix
+% Read the ephemere
 [ephm, info, ~] = getrinexephGal();
 ecef_matrix = zeros(k, 3);
 parsed_matrix = zeros(size(ephm,1), k);
-% parsed_ephm  is a len(ephemerides) x k matrix 
-% ecef_matrix is a k x 3 matrix
 
 toe_index = find(strcmp(info, 'toe'));
 af0_index = find(strcmp(info, 'af0'));
@@ -26,6 +26,8 @@ af1_index = find(strcmp(info, 'af1'));
 af2_index = find(strcmp(info, 'af2'));
 
 for i = 1:k
+    disp('sat num i')
+    disp(sat_nums(i));
     ti = tow - taus(i);
     [~, ecef_coord, parsed_ephm] = eci_and_ecef_coord(ti, sat_nums(i), we, ephm, info);
     ecef_matrix(i,:) = ecef_coord;
@@ -34,15 +36,17 @@ for i = 1:k
     af0 = parsed_ephm(af0_index);
     af1 = parsed_ephm(af1_index);
     af2 = parsed_ephm(af2_index);
-    toe = parsed_ephm(toe_index);
-    
+    toe = parsed_ephm(toe_index);   
     dtks(i) = af0 + af1*(ti-toe) + af2*(ti-toe)^2;
 end
 
 % Having a first value for dtks, we could stop, but we can actually refine
 % the values of dtk
 for i = 1:k
-    ti = tow - taus(i) - dtks(i); 
+    % we can find af0, af1, af2 and toe in the ephemerides 
+    %%%%%%%%%%%%TEST%%%%%%%%%
+    ti = tow - taus(i) - dtks(i);
+ 
     [~, ecef_coord, parsed_ephm] = eci_and_ecef_coord(ti, sat_nums(i), we, ephm, info);
     ecef_matrix(i,:) = ecef_coord;
     parsed_matrix(:, i) = parsed_ephm;
@@ -57,8 +61,11 @@ end
 % We can finally correct the pseudoranges: P = P' +c*dtk
 corrected_pseudoranges = pseudoranges + dtks*c;
 
+
 %% Correction for Earth rotation: 
 worst_delay = 0.072; % [s]
+% first argument of correction_Earth_rotation must have columns of coord
+
 corrected_ecef = zeros(k, 3); %k x 3 matrix
 for i = 1:k
    corrected_ecef(i, :) = correction_Earth_rotation(ecef_matrix(i,:)', worst_delay)'; 
@@ -67,7 +74,6 @@ disp('ecef without Earth correction = ')
 disp(ecef_matrix)
 disp('ecef corrected with Earth rotation, using worst delay = ')
 disp(corrected_ecef)
-
 %% Apply Bancroft
 % r is a vector containing receiver coordinates
 % b is the receiver clock bias c*dti
@@ -81,7 +87,7 @@ for i = 1:k
 end
 disp('ecef corrected with Earth rotation, using smaller delay = ')
 disp(corrected_ecef)
-%% Finally we re-apply Bancroft:
+%% Re-apply Bancroft:
 [r, b] = bancroft(corrected_ecef, corrected_pseudoranges')
 
 end

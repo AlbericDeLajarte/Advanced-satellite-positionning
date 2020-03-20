@@ -1,5 +1,5 @@
 function [r, b] = solve_equation(B, alpha, e)
-
+%%
 temp1 = B*e;
 temp2 = B*alpha;
 

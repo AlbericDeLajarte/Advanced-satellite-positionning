@@ -15,6 +15,7 @@ format long g
     crs_index, i0_index, idot_index, cic_index, cis_index, ...
     omega0_index, omegadot_index] = find_indices(info);
 
+
 % The following matrices will contain the final coordinates in eci and ecef
 eci_matrix = zeros(length(sat_nums), 3);
 ecef_matrix = zeros(length(sat_nums), 3);
@@ -50,5 +51,6 @@ for i=1:length(sat_nums)
     eci_matrix(i,:) = [x_eci, y_eci, z_eci];
     [x_ecef, y_ecef, z_ecef] = geocentric_coordinates(r, phi, ecef_omega, inc);
     ecef_matrix(i,:) = [x_ecef, y_ecef, z_ecef];
+end
 end
 
