@@ -26,7 +26,7 @@ if(length(signal_1) == length(signal_2) )
     corr = zeros(1, k);
 else
     k = 0;
-    disp("\nError: the signals should have the same length\n");
+    disp("Error: the signals should have the same length");
 end
 
 for i = 0:k-1

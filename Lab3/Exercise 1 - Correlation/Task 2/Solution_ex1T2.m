@@ -7,22 +7,17 @@ load('Ex1T2_mistery_signal.mat');
 fs = 6.5e6; % [Hz] 
 fc = 1.023e6; % [Hz] 
 data_length = 1; % [ms] 
+PRN_code = 1:10;
 
 
 %% Compute the crosscorrelation with different PNR number
-maxPNR = zeros(1, 10);
+tic;
+sat_number = find_PRN_code(PRN_code, fs, fc, data_length, mistery_s, "showCorr");
+toc
 
-for PNR = 1:10
-    CA_code = generateGoldCodeSampled (PNR, fs, fc, data_length);
-    maxPNR(PNR) = max(computeCorrelation(CA_code, mistery_s));
+%% Find delay of each detected satellite
+for PNR = sat_number
+    delay = find_PRN_delay(PNR, fs, fc, data_length, mistery_s, "showCorr");
+    disp("Detected satellite "+ PNR + " with delay = " + delay + " seconds");
 end
-
     
-figure(1);
-plot(maxPNR)
-xlabel("Satellite number");
-ylabel("Correlation");
-
-CA_code_1 = generateCAcode(1);
-CA_code_ext_1 = interp1(0:1/(1.023e6):1e-3-1/(1.023e6), CA_code_1, 0:1/(6.5e6):1e-3-1/(6.5e6), 'nearest', 'extrap');
-plot(computeCorrelation(CA_code_ext_1, mistery_s));

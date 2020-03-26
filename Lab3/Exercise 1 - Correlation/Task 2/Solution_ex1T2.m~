@@ -1,26 +1,24 @@
 %  Advanced Satellite Positioning - Lab 3 Task 2
+
+%% Setup
 addpath("../Task 1");
 load('Ex1T2_mistery_signal.mat');
 
 fs = 6.5e6; % [Hz] 
 fc = 1.023e6; % [Hz] 
 data_length = 1; % [ms] 
+PNR_code = 1:10;
 
-maxPNR = zeros(1, 10);
 
-for PNR = 1:10
-    CA_code = generateGoldCodeSampled (PNR, fs, fc, 1);;
-    CA_code_ext = interp1(0:1/(1.023e6):1e-3-1/(1.023e6), CA_code, 0:1/(6.5e6):1e-3-1/(6.5e6), 'nearest', 'extrap');
-    maxPNR(PNR) = max(computeCorrelation(CA_code_ext, mistery_s));
+%% Compute the crosscorrelation with different PNR number
+tic;
+sat_number = find_PRN_code(PNR_code, fs, fc, data_length, mistery_s, "showCorr");
+toc
+
+%% Find delay of each detected satellite
+for PRN = sat_number
+    delay = find_PRN_delay(PNR, fs, fc, data_length, mistery_s);
+    disp("Detect")
 end
-
     
-figure(1);
-plot(maxPNR)
-xlabel("Satellite number");
-ylabel("Correlation");
-
-
-CA_code_1 = generateCAcode(1);
-CA_code_ext_1 = interp1(0:1/(1.023e6):1e-3-1/(1.023e6), CA_code_1, 0:1/(6.5e6):1e-3-1/(6.5e6), 'nearest', 'extrap');
-plot(computeCorrelation(CA_code_ext_1, mistery_s));
+    
