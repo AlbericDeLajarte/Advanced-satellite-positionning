@@ -79,12 +79,12 @@ signal1 = longSignal(1 : samplesPerCode);
 
 
 fprintf('(');
-
+figure_number = 0;
 % Perform search for all listed PRN numbers ...
 for PRN = settings.acqSatelliteList
      
     %% Step 2. Generate the C/A code and sample them according to the sampling freq.
-    caCode = generateGoldCodeSampled(..);
+    caCode = generateGoldCodeSampled(PRN, settings.samplingFreq, settings.codeFreqBasis , settings.codeLength/settings.codeFreqBasis*1e3 );
         
     %--- Make the correlation for whole frequency band (for all freq. bins)
     for frqBinIndex = 1:numberOfFrqBins
@@ -93,6 +93,13 @@ for PRN = settings.acqSatelliteList
         frqBins(frqBinIndex) = settings.IF - ...
             (settings.acqSearchBand/2) * 1e3 + ...
             settings.acqFreqstep * 1e3 * (frqBinIndex - 1);
+        
+        n = 0:(samplesPerCode-1);
+        carrier_sin = sin(2*pi*frqBins(frqBinIndex)*n/settings.samplingFreq);
+        carrier_cos = cos(2*pi*frqBins(frqBinIndex)*n/settings.samplingFreq);
+        
+        signal1_FFT = fft((carrier_cos + 1i*carrier_sin).*signal1);
+        PRN_FFT = conj(fft(caCode));
         
         
         % #################################################################
@@ -106,7 +113,7 @@ for PRN = settings.acqSatelliteList
 
         
         % Store correlation results ------------
-        results(frqBinIndex, :) = ;   % TO BE COMPLETED
+        results(frqBinIndex, :) = abs(ifft(signal1_FFT.*PRN_FFT)).^2;   % TO BE COMPLETED
 
 
     end % frqBinIndex = 1:numberOfFrqBins
@@ -117,12 +124,12 @@ for PRN = settings.acqSatelliteList
     % The second peak is chosen not closer than 1 chip to the highest peak
 
     %--- Find code phase and peak Sizeof the same correlation peak ---------------------
-    codePhase         = ; % TO BE COMPLETED
-    peakSize          = ;
+    peakSize          = max(results(:));
+    [frequencyBinIndex, codePhase]         = find(results == peakSize); % TO BE COMPLETED
+    
     
     %--- Find the correlation peak and the carrier frequency --------------
-    frequencyBinIndex = ;
-    
+   
 
 
     %--- Use the secondPeak function provided to find the second 
@@ -133,6 +140,7 @@ for PRN = settings.acqSatelliteList
     acqResults.peakMetric(PRN) = peakSize/secondPeakSize;
     
     % If the result is above threshold, then there is a signal ...
+    
     if (peakSize/secondPeakSize) > settings.acqThreshold
         
         % #################################################################
@@ -140,8 +148,17 @@ for PRN = settings.acqSatelliteList
         % Plot Cross-Ambiguity Function (CAF) 
         % Use mesh() function
         % #################################################################
-
+        figure_number = figure_number+1;
+        [delay_sample, freq_shift] = meshgrid(n, frqBins - settings.IF);
         
+        figure(figure_number);
+        mesh(delay_sample, freq_shift, results);
+        colorbar;
+        
+        xlabel('delay [sample]');
+        ylabel('Doppler shift [Hz]');
+        zlabel('CAF');
+        title("Cross Ambiguity Function for PRN = " + PRN);
         %--- Indicate PRN number of the detected signal -------------------
         fprintf('%02d ', PRN);
         

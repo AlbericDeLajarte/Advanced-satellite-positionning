@@ -40,7 +40,7 @@
 %
 %% Initialization =========================================================
 disp ('Starting processing...');
-addpath('.\include');
+addpath('include');
 
 % Load settings using initSettings() function
 settings=initSettings;
