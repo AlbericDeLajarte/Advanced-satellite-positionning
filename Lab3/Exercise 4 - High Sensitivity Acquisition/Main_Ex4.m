@@ -60,19 +60,20 @@ if (fid > 0)
     
     %--- Do the acquisition -------------------------------------------
     disp ('   Acquiring satellites...');
-   
+  
     fprintf('(');
 
     % ########################################################################
     %% TO BE COMPLETED BY THE STUDENTS:
     % Write your code here (same as for Exercice 3 with modifications, 
     % which ones?)
-
+    acqResults = acquisition_Tcoh(settings, data);
     % Perform search for all listed PRN numbers ...
+    %{
     for PRN = settings.acqSatelliteList
         ...
     end
-
+    %}
     %=== Acquisition is over, plot results ================================
     fprintf(')\n');
     plotAcquisition(acqResults);   

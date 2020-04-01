@@ -22,12 +22,12 @@ end
 CA_code = generateGoldCodeSampled (PRN, fs, fc, data_length);
 FFTCorr = FFTCorrelation(CA_code, sat_signal);
 
-if(strcmp(plotOption,'showCorr') == 1)
+if(plotOption == "showCorr")
     figure(i);
     plot(FFTCorr)
     xlabel('Sample shift');
     ylabel('Correlation');
-    title(strcat('Cross correlation of PRN number ', {' '} ,num2str(PRN), {' '}, ' with the received signal')); 
+    title("Cross correlation of PRN number " + PRN + " with the received signal"); 
 end 
 [~, indice] = max(FFTCorr);
 delay = indice*(1/fs);

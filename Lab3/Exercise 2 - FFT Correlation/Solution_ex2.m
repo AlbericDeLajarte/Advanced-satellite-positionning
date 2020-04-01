@@ -17,7 +17,7 @@ toc
 i = 2;
 for PRN = sat_number
     delay = find_PRN_delay_FFT(PRN, fs, fc, data_length, mistery_s, 'showCorr',i );
-    disp(strcat('Detected satellite ', {' '} , num2str(PRN),' with delay = ', {' '} , num2str(delay), ' sec'));
+    disp("Detected satellite "+ PRN + " with delay = " + delay + " seconds");
     i = i + 1;
 end
 

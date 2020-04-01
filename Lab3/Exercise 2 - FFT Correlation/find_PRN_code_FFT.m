@@ -20,22 +20,22 @@ if(nargin < 6)
     plotOption = 'noPlot';
 end
 
-maxPNR = zeros(1, 10);
+maxPRN = zeros(1, 10);
 sat_number = [];
 for PRN = PRN_number
     CA_code = generateGoldCodeSampled (PRN, fs, fc, data_length);
     FFTCorr = FFTCorrelation(CA_code, sat_signal);
-    maxPNR(PRN) = max(FFTCorr);
+    maxPRN(PRN) = max(FFTCorr);
     
     % In case of correlation, the max of correlation should be equal to the length of the signal
-    if(maxPNR(PRN) > 0.8*length(CA_code)) 
+    if(maxPRN(PRN) > 0.8*length(CA_code)) 
         sat_number = [sat_number, PRN];
     end
 end
 
-if(strcmp(plotOption,'showCorr') == 1)
+if(plotOption == "showCorr")
     figure(1)
-    plot(maxPNR)
+    plot(maxPRN)
     xlabel('Satellite number');
     ylabel('Correlation');
     title('Maximum of the cross correlation of PRN number 1 to 10 with mistery signal')

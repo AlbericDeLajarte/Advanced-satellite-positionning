@@ -52,7 +52,7 @@ settings.startOffset        = 68.802;       %[ms] Initial sign. travel time
 
 % Coherent Integration time used in Acquisition:
 settings.cohInt             = 1;            %[ms];
-
+settings.nonCohInt          = 10;            %[ms];
 %% Raw signal file name and other parameter ===============================
 % This is a "default" name of the data file (signal record) to be used in
 % the post-processing mode

@@ -59,7 +59,7 @@ if (fid > 0)
 %% TO BE COMPLETED BY THE STUDENTS:
 %  Write your code here
 % (Same code as for Exercice 4 with even fewer modifications ;) )
-  
+    acqResults = acquisition_Tcoh(settings, data);
     plotAcquisition(acqResults);   
 
 else
