@@ -99,7 +99,7 @@ for PRN = settings.acqSatelliteList
             (settings.acqSearchBand/2) * 1e3 + ...
             settings.acqFreqstep * 1e3 * (frqBinIndex - 1);
 
-        n = 0:(samplesPerCode-1);
+        n = 0:(settings.nonCohInt*settings.cohInt*samplesPerCode -1);
         % generate carrier replicas to perform carrier removal
         carrier_sin = sin(2*pi*frqBins(frqBinIndex)*n/settings.samplingFreq);
         carrier_cos = cos(2*pi*frqBins(frqBinIndex)*n/settings.samplingFreq);
@@ -110,20 +110,20 @@ for PRN = settings.acqSatelliteList
             cohSum = zeros(1, samplesPerCode);          
             for cohChunk = 1:samplesPerCode:settings.cohInt*samplesPerCode
   
-                %disp("[ " + nonCohChunk*cohChunk)
-                %disp(nonCohChunk*cohChunk+samplesPerCode -1 + " ]")
                 signalChunk = longSignal(nonCohChunk*cohChunk : nonCohChunk*cohChunk + samplesPerCode -1);
+                carrier_cos_chunk = carrier_cos(nonCohChunk*cohChunk : nonCohChunk*cohChunk + samplesPerCode -1);
+                carrier_sin_chunk = carrier_sin(nonCohChunk*cohChunk : nonCohChunk*cohChunk + samplesPerCode -1);
                 % remove carrier from the signal
-                I = carrier_cos.*signalChunk;
-                Q = carrier_sin.*signalChunk;
+                I = carrier_cos_chunk.*signalChunk;
+                Q = carrier_sin_chunk.*signalChunk;
                 signalChunk_FFT = fft(I + 1i*Q);
                 PRN_FFT = conj(fft(caCode));
-                % Add new correlation result
+                % Add coherently new correlation result
                 cohSum = cohSum + signalChunk_FFT.*PRN_FFT;
             end
             cohSum = abs(ifft(cohSum)).^2;   
+            % Add incoherently the results
             incohSum = incohSum + cohSum;
-            % Last step for coherent integration: inverse, abs and square 
         end
         
         results(frqBinIndex, :) = incohSum;
@@ -136,12 +136,11 @@ for PRN = settings.acqSatelliteList
 
     %--- Find code phase and peak Sizeof the same correlation peak ---------------------
     peakSize          = max(results(:));
-    [frequencyBinIndex, codePhase]         = find(results == peakSize); % TO BE COMPLETED
     
-    
+    [frequencyBinIndex, codePhase]= find(results == peakSize); % TO BE COMPLETED
+     
     %--- Find the correlation peak and the carrier frequency --------------
-   
-
+  
 
     %--- Use the secondPeak function provided to find the second 
     %    highest correlation peak in the same freq. bin ---
@@ -154,14 +153,10 @@ for PRN = settings.acqSatelliteList
     
     if (peakSize/secondPeakSize) > settings.acqThreshold
         
-        % #################################################################
-        % TO BE COMPLETED BY THE STUDENTS
         % Plot Cross-Ambiguity Function (CAF) 
-        % Use mesh() function
-        % #################################################################
         figure_number = figure_number+1;
-
-        [delay_sample, freq_shift] = meshgrid(n, frqBins - settings.IF);
+        
+        [delay_sample, freq_shift] = meshgrid(0:(samplesPerCode-1), frqBins - settings.IF);
         
         figure(figure_number);
         mesh(delay_sample, freq_shift, results);

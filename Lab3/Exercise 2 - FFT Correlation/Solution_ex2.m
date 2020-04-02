@@ -14,6 +14,7 @@ tic;
 sat_number = find_PRN_code_FFT(PRN_code, fs, fc, data_length, mistery_s, 'showCorr');
 toc
 
+%% Compute the delays
 i = 2;
 for PRN = sat_number
     delay = find_PRN_delay_FFT(PRN, fs, fc, data_length, mistery_s, 'showCorr',i );
