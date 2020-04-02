@@ -93,36 +93,39 @@ for PRN = settings.acqSatelliteList
     %--- Make the correlation for whole frequency band (for all freq. bins)
     
     for frqBinIndex = 1:numberOfFrqBins
-        incohSum = zeros(1, samplesPerCode);
+              
+        % Generate carrier wave frequency grid (acqFreqstep kHz step)
+        frqBins(frqBinIndex) = settings.IF - ...
+            (settings.acqSearchBand/2) * 1e3 + ...
+            settings.acqFreqstep * 1e3 * (frqBinIndex - 1);
+
+        n = 0:(samplesPerCode-1);
+        % generate carrier replicas to perform carrier removal
+        carrier_sin = sin(2*pi*frqBins(frqBinIndex)*n/settings.samplingFreq);
+        carrier_cos = cos(2*pi*frqBins(frqBinIndex)*n/settings.samplingFreq);
         
+        incohSum = zeros(1, samplesPerCode);     
         for nonCohChunk = 1:samplesPerCode:settings.nonCohInt*samplesPerCode
-
-            % Generate carrier wave frequency grid (acqFreqstep kHz step)
-            frqBins(frqBinIndex) = settings.IF - ...
-                (settings.acqSearchBand/2) * 1e3 + ...
-                settings.acqFreqstep * 1e3 * (frqBinIndex - 1);
-
-            n = 0:(samplesPerCode-1);
-            % generate carrier replicas to perform carrier removal
-            carrier_sin = sin(2*pi*frqBins(frqBinIndex)*n/settings.samplingFreq);
-            carrier_cos = cos(2*pi*frqBins(frqBinIndex)*n/settings.samplingFreq);
-
+            
             cohSum = zeros(1, samplesPerCode);          
             for cohChunk = 1:samplesPerCode:settings.cohInt*samplesPerCode
   
                 %disp("[ " + nonCohChunk*cohChunk)
                 %disp(nonCohChunk*cohChunk+samplesPerCode -1 + " ]")
-                signalChunk = longSignal(nonCohChunk*cohChunk : nonCohChunk*cohChunk+samplesPerCode -1);
+                signalChunk = longSignal(nonCohChunk*cohChunk : nonCohChunk*cohChunk + samplesPerCode -1);
                 % remove carrier from the signal
-                signalChunk_FFT = fft((carrier_cos + 1i*carrier_sin).*signalChunk);
+                I = carrier_cos.*signalChunk;
+                Q = carrier_sin.*signalChunk;
+                signalChunk_FFT = fft(I + 1i*Q);
                 PRN_FFT = conj(fft(caCode));
                 % Add new correlation result
                 cohSum = cohSum + signalChunk_FFT.*PRN_FFT;
             end
             cohSum = abs(ifft(cohSum)).^2;   
+            incohSum = incohSum + cohSum;
             % Last step for coherent integration: inverse, abs and square 
         end
-        incohSum = incohSum + cohSum;
+        
         results(frqBinIndex, :) = incohSum;
     end % frqBinIndex = 1:numberOfFrqBins
     
@@ -159,7 +162,7 @@ for PRN = settings.acqSatelliteList
         figure_number = figure_number+1;
 
         [delay_sample, freq_shift] = meshgrid(n, frqBins - settings.IF);
-        %{
+        
         figure(figure_number);
         mesh(delay_sample, freq_shift, results);
         colorbar;
@@ -168,7 +171,7 @@ for PRN = settings.acqSatelliteList
         ylabel('Doppler shift [Hz]');
         zlabel('CAF');
         title("Cross Ambiguity Function for PRN = " + PRN);
-        %}
+        
         %--- Indicate PRN number of the detected signal -------------------
         fprintf('%02d ', PRN);
         
