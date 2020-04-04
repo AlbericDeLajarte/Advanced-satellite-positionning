@@ -246,7 +246,11 @@ for channelNr = 1:settings.numberOfChannels
 %% Find PLL error and update carrier NCO ----------------------------------
             % ADD YOUR CODE HERE to implement the carrier loop
             % discriminator
-
+            
+            % My comment: compute phase using atan and prompt signals
+            phaseError = atan2(Q_P/I_P);
+            % Then find the frequency from this knowing that carrier loop 
+            % period is equal to ∆t = 1 
             carrError = ;
             
             
@@ -264,8 +268,10 @@ for channelNr = 1:settings.numberOfChannels
 %% Find DLL error and update code NCO -------------------------------------
             % ADD YOUR CODE HERE to implement the code loop
             % discriminator
-
-            codeError = ;     
+            
+            E = math.sqrt(I_E.^2 + Q_E.^2);
+            L = math.sqrt(I_L.^2 + Q_L.^2);
+            codeError = (E - L)/(E + L);     
             
             
             
