@@ -247,7 +247,7 @@ for channelNr = 1:settings.numberOfChannels
             % ADD YOUR CODE HERE to implement the carrier loop
             % discriminator
             
-            % My comment: compute phase using atan and prompt signals
+            % My comment: compute phase using atan and prompt signals 
             phaseError = atan2(Q_P/I_P);
             % Then find the frequency from this knowing that carrier loop 
             % period is equal to ∆t = 1 
