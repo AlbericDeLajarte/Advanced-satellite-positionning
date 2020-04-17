@@ -248,10 +248,10 @@ for channelNr = 1:settings.numberOfChannels
             % discriminator
             
             % My comment: compute phase using atan and prompt signals 
-            phaseError = atan2(Q_P/I_P);
+            phaseError = atan(Q_P/I_P);%atan2(Q_P,I_P);
             % Then find the frequency from this knowing that carrier loop 
             % period is equal to ∆t = 1 
-            carrError = ;
+            carrError = phaseError/(2 * pi * 1) ;
             
             
             % Implement carrier loop filter and generate NCO command
@@ -269,8 +269,8 @@ for channelNr = 1:settings.numberOfChannels
             % ADD YOUR CODE HERE to implement the code loop
             % discriminator
             
-            E = math.sqrt(I_E.^2 + Q_E.^2);
-            L = math.sqrt(I_L.^2 + Q_L.^2);
+            E = sqrt(I_E.^2 + Q_E.^2);
+            L = sqrt(I_L.^2 + Q_L.^2);
             codeError = (E - L)/(E + L);     
             
             

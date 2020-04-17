@@ -91,7 +91,7 @@ settings.acqFreqstep        = 0.1;          %[kHz]
 % Code tracking loop parameters
 settings.dllDampingRatio         = 0.7;
 settings.dllNoiseBandwidth       = 2;       %[Hz] (default 2 Hz)
-settings.dllCorrelatorSpacing    = 0.5;     %[chips]
+settings.dllCorrelatorSpacing    = 0.5; % 0.5;     %[chips]
 
 % Carrier tracking loop parameters
 settings.pllDampingRatio         = 0.7;
