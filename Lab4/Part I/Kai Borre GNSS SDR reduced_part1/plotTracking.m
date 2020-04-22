@@ -148,5 +148,5 @@ for channelNr = channelList
 %         xlabel(handles(3, 3), 'Time (s)');
 %         ylabel(handles(3, 3), 'Amplitude');
 %         title (handles(3, 3), 'Filtered DLL discriminator');
-        saveas(f, sprintf('%d_%d.jpg', channelNr +200, settings.dllCorrelatorSpacing))
+        saveas(f, sprintf('%d_%d_%s.jpg', channelNr +200, settings.dllCorrelatorSpacing, settings.discriminator))
 end % for channelNr = channelList

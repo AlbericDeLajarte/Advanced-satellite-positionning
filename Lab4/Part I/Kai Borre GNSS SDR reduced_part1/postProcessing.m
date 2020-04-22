@@ -93,7 +93,7 @@ if (fid > 0)
         disp ('   Acquiring satellites...');
         acqResults = acquisition_s2(data, settings);
 
-        plotAcquisition(acqResults);
+        %plotAcquisition(acqResults);
     end
 
 %% Initialize channels and prepare for the run ============================
@@ -131,12 +131,13 @@ if (fid > 0)
                       'trackResults', 'settings', 'acqResults', 'channel');                  
 
 %% Calculate navigation solutions =========================================
-%     disp('   Calculating navigation solutions...');
-%     navSolutions = postNavigation(trackResults, settings);
+     disp('   Calculating navigation solutions...');
+     navSolutions = postNavigation(trackResults, settings);
 % 
-%     disp('   Processing is complete for this data block');
+     disp('   Processing is complete for this data block');
 
 %% Plot all results ===================================================
+%{
     disp ('   Ploting results...');
     if settings.plotTracking
         plotTracking(1:settings.numberOfChannels, trackResults, settings);
@@ -145,7 +146,7 @@ if (fid > 0)
 %     plotNavigation(navSolutions, settings);
 
     disp('Post processing of the signal is over.');
-
+%}
 else
     % Error while opening the data file.
     error('Unable to read file %s: %s.', settings.fileName, message);

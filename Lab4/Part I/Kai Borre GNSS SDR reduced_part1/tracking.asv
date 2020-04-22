@@ -106,7 +106,9 @@ for channelNr = 1:settings.numberOfChannels
     
     % Only process if PRN is non zero (acquisition was successful)
     if (channel(channelNr).PRN ~= 0)
-                
+        
+        st
+        
         % Save additional information - each channel's tracked PRN
         trackResults(channelNr).PRN     = channel(channelNr).PRN;
         
@@ -276,8 +278,9 @@ for channelNr = 1:settings.numberOfChannels
             
             E = sqrt(I_E.^2 + Q_E.^2);
             L = sqrt(I_L.^2 + Q_L.^2);
-            codeError = (E - L)/(E + L);  
-                        
+            codeError = (E - L)/(E + L);     
+            
+            
             
             % Implement code loop filter and generate NCO command
             codeNco = oldCodeNco + (tau2code/tau1code) * ...
@@ -316,10 +319,6 @@ for channelNr = 1:settings.numberOfChannels
         
     end % if a PRN is assigned
 end % for channelNr 
-
-%% Compute standard deviation of the DLL discriminator values, 
-% over the last 0.1 s, for channel 1 (PRN31):
-%DLLstd = std(trackResults(1).dllDiscr(901:end));
 
 % Close the waitbar
 close(hwb)
