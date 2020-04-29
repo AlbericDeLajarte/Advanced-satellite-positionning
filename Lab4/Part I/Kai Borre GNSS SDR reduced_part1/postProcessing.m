@@ -137,16 +137,16 @@ if (fid > 0)
      disp('   Processing is complete for this data block');
 
 %% Plot all results ===================================================
-%{
+
     disp ('   Ploting results...');
     if settings.plotTracking
         plotTracking(1:settings.numberOfChannels, trackResults, settings);
     end
 
-%     plotNavigation(navSolutions, settings);
+     plotNavigation(navSolutions, settings);
 
     disp('Post processing of the signal is over.');
-%}
+
 else
     % Error while opening the data file.
     error('Unable to read file %s: %s.', settings.fileName, message);

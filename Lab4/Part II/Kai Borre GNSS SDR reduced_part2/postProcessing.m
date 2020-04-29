@@ -132,10 +132,10 @@ if (fid > 0)
                       'trackResults', 'settings', 'acqResults', 'channel');                  
 
 %% Calculate navigation solutions =========================================
-%      disp('   Calculating navigation solutions...');
-%      navSolutions = postNavigation(trackResults, settings);
-%  
-%      disp('   Processing is complete for this data block');
+      disp('   Calculating navigation solutions...');
+      navSolutions = postNavigation(trackResults, settings);
+  
+      disp('   Processing is complete for this data block');
 
 %% Plot all results ===================================================
     disp ('   Ploting results...');

@@ -45,7 +45,7 @@ settings.msToProcess        = 1000;        %[ms]
 settings.numberOfChannels   = 12;
 
 % Coherent Integration time used in Acquisition:
-settings.cohInt             = 1;            %[ms];
+settings.cohInt             = 10;            %[ms];
 
 % Move the starting point of processing. Can be used to start the signal
 % processing at any point in the data record (e.g. for long records). fseek
@@ -57,7 +57,7 @@ settings.skipNumberOfBytes     = 0;
 % This is a "default" name of the data file (signal record) to be used in
 % the post-processing mode
 settings.fileName           = ...
-   '..\..\ENV542_GPS_CA_data_capture2.bin';
+   '../../ENV542_GPS_CA_data_capture2.bin';
 % Data type used to store one sample
 settings.dataType           = 'int8';
 
@@ -80,7 +80,7 @@ settings.skipAcquisition    = 0;
 % up acquisition
 settings.acqSatelliteList   = 1:32;         %[PRN numbers]
 % Band around IF to search for satellite signal. Depends on max Doppler
-settings.acqSearchBand      = 14;           %[default 14 kHz]
+settings.acqSearchBand      = 48;           %[default 14 kHz]
 % Threshold for the signal presence decision rule
 settings.acqThreshold       = 2.5;
 % Acquistion frequency step
@@ -90,7 +90,7 @@ settings.acqFreqstep        = 0.1;          %[kHz]
 %% Tracking loops settings ================================================
 % Code tracking loop parameters
 settings.dllDampingRatio         = 0.7;
-settings.dllNoiseBandwidth       = 2;       %[Hz] (default 2 Hz)
+settings.dllNoiseBandwidth       = 20;       %[Hz] (default 2 Hz)
 settings.dllCorrelatorSpacing    = 0.5;     %[chips]
 
 % Carrier tracking loop parameters
