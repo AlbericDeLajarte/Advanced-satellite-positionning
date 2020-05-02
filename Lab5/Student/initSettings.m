@@ -3,7 +3,7 @@ function [settings] = initSettings
 % To be modified by the Student in every Exercise
 
 % Select the signal modulation, it should be BPSK or BOC11 
-settings.modulation = 'BPSK';
+settings.modulation = 'BOC11'; %BPSK';
 
 % Select the early-late spacing, 0<spacing<1 (d)
 settings.spacing = 0.6;                                  % [chips]
