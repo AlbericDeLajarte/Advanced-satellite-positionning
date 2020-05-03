@@ -44,7 +44,13 @@ discr_total = 0.5.*I_P_total.*(I_E_total - I_L_total);
 
 discr_total = discr_total/max(abs(discr_total));
 
-
+index_where_error_is_0 = find(discr_LOS == 0)
+%length(discr_LOS)
+%length(index_where_error_is_0)
+%settings.dtau(index_where_error_is_0(950:1050))
+%discr_LOS(index_where_error_is_0(950:1050))
+%index_where_error_is_0  = find(discr_total);
+%settings.dtau(index_where_error_is_0)
 %% Plot results -----------------------------------------------------------
 close all
 
