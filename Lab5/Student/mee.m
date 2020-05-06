@@ -29,4 +29,5 @@ grid on;
 % Create axes labels
 xlabel('Multipath Delay [m]');
 ylabel('Multipath Code Error [m]');
+legend("Constructive multipath", "Destructive multipath");
         
