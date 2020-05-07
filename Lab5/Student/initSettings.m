@@ -6,7 +6,7 @@ function [settings] = initSettings
 settings.modulation = 'BPSK'; % 'BPSK' or'BOC11' ;%
 
 % Select the early-late spacing, 0<spacing<1 (d)
-settings.spacing = 0.2; %0.6;                                  % [chips]
+settings.spacing = 1; %0.6;                                  % [chips]
 
 % Select the code delay span and steps
 settings.delay_step = 0.001;                             % [chips]
@@ -22,7 +22,7 @@ settings.MSAR = 0.5; %0.3;
 settings.multipath_delay = 0.5;  %0.6                         % [chips]
 
 % Select the Multipath Phase
-settings.multipath_phase = 0;                             % [rad]
+settings.multipath_phase = 0; %pi                             % [rad]
 
 
 
