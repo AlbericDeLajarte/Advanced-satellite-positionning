@@ -19,16 +19,17 @@ DD_matrix = zeros(nb_of_sat-1, nb_of_meas, nb_of_epochs);
 size(DD_matrix)
 
 %%{
-%for epoch = 1:nb_of_epochs
+for epoch = 1:1 %nb_of_epochs
     for k = 1:nb_of_sat
         sat_k = sats_nb(k);
         if base_sat_nb == sat_k
             continue;
         end
-        DD_matrix(k, :, epoch) = compute_double_diff(base_sat_nb, sat_k, master_obs, rover_obs);
+        epoch_index = find(file_labels == 'TOW');
+        DD_matrix(k, :, epoch) = compute_double_diff(base_sat_nb, sat_k, master_obs, rover_obs, epoch);
     end
-%end 
+end 
 %%}
-
+DD_matrix(1,:,1)
 end
 
