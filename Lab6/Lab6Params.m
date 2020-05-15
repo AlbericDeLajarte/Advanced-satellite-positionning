@@ -1,9 +1,9 @@
 
 sats_nb = [2, 3, 5, 8, 11, 12, 24, 25];
-base_sat_nb = 8;
-file_labels = ["TOW", "PRN", "CodeE1", "CodeE2", "PhaseE1", "PhaseE2"]; 
+base_sat_nb = 8; % assigned base satellite 
+file_labels = ["TOW", "PRN", "CodeE1", "CodeE5a", "PhaseE1", "PhaseE5a"]; % datam and datar files format
 
 % https://galileognss.eu/galileo-frequency-bands/
-F1 = 1575.42e+6; % 1.54e+09 ? 
-F2 = 1176.45e+6; % 1.15e+09 ? 
-c = 299792458;  %3e08;
+F1 = 1575.42e+6; % E1 frequency [MHz] 1.54e+09 ? 
+F2 = 1176.45e+6; % E5a frequency [MHz] 1.15e+09 ? 
+c = 299792458;  % Speed of light  [m/s] 
