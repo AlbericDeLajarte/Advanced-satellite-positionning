@@ -1,0 +1,31 @@
+function [] = Lab6A()
+
+Lab6Params;
+
+master_obs = load('datam.mat');
+rover_obs = load('datar.mat');
+
+nb_of_sat = length(sats_nb);
+nb_of_epochs = length(master_obs.datam)/nb_of_sat;
+nb_of_meas = 4; % code and phase, for 2 frequencies
+
+DD_matrix = zeros(nb_of_sat-1, nb_of_meas, nb_of_epochs);
+size(DD_matrix)
+
+% Fill DD matrix for each (sat_base, sat_k) pair, for each epoch
+
+prn_index = find(file_labels == 'PRN');
+%for epoch = 1:nb_of_epochs
+    %{for sat_k = 1:nb_of_sat
+        if base_sat_nb == sats_nb(sat_k)
+            continue;
+        end
+        prn_index = find(file_labels == 'PRN');
+        measurements_m = find(master_obs.datam(:, 
+        measurements_r =
+        DD_matrix(sats_nb(sat_k), :, epoch) = compute_DD(base_sat_nb, sats_nb(sat_k)
+en
+%end 
+
+end
+

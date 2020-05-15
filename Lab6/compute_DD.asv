@@ -1,0 +1,23 @@
+%% Compute the double difference for pair of sat (b, k)
+function [double_diff_b_k] = compute_DD(sat_b, sat_k, master_obs, rover_obs, epoch)
+%% Arguments:
+% sat_b: the base satellite
+% sat_k: another satellite 
+% 
+%% Computation of the double difference:
+
+PRN_index = find(file_labels == 'PRN');
+measurements_m_to_b = master_obs(find(master_obs(:, PRN_index) == sat_k), :, epoch);
+measurements_r_t = rover_obs(find(master_obs(:, PRN_index) == sat_k), :, epoch);
+
+m_to_b = measurements_m
+r_to_b = measurements_b
+m_to_k =
+r_to_k =
+
+single_diff_to_b = m_to_b - r_to_b;
+single_diff_to_k = m_to_k - r_to_k;
+double_diff_b_k = single_diff_to_b - single_diff_to_k;
+
+end
+
