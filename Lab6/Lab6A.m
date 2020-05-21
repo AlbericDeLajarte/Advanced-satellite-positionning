@@ -2,8 +2,10 @@ function [] = Lab6A()
 %% Load parameters and files
 Lab6Params;
 
-master_obs = load('datam.mat').datam;
-rover_obs = load('datar.mat').datar;
+master_obs = load('datam.mat');
+master_obs = master_obs.datam;
+rover_obs = load('datar.mat');
+rover_obs = rover_obs.datar;
 
 %% Conversion of phase measurement from [cycles] to [m]
 master_obs(:, 5:6) = master_obs(:, 5:6).*[c/F1, c/F2];
