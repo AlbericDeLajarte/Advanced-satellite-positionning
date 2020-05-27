@@ -1,6 +1,8 @@
 function [] = Lab6()
 %% Load parameters and files
 Lab6Params;
+addpath(genpath(pwd))
+
 
 master_obs = load('datam.mat');
 master_obs = master_obs.datam;
@@ -80,10 +82,11 @@ WL_IF_ambiguity_matrix(:,2,nb_of_epochs)
 
 
 %% Plot
+%{
 fig_nb = 1;
 fig_nb = plot_ambiguities_evolution(int_ambiguity_matrix, WL_IF_ambiguity_matrix, fig_nb);
 fig_nb = plot_ionosphere_evolution(Iono_delay_matrix, fig_nb);
-
+%}
 %% LAB C:
 
 % Position of rover and master
@@ -99,36 +102,47 @@ rho_sat_master = compute_range_sat(x_master, x_k);
 %P =  diag(2*ones((nb_of_sat-1)*2, 1))+ 2*ones((nb_of_sat-1)*2) ;
 P = eye(14);
 
-% Constant term of the l' vector
+% Compute constant terms of the l' vector
 phase_range = [DD_matrix(:, 3, end);DD_matrix(:, 4, end)];
-ambiguity_range = [int_ambiguity_matrix(:,1,end); int_ambiguity_matrix(:,2,end)].*[repmat(c/F1, nb_of_sat-1, 1); repmat(c/F2, nb_of_sat-1, 1)];
+% We multiply ambiguities by wavelength
+ambiguity_range = [int_ambiguity_matrix(:,1,end); int_ambiguity_matrix(:,2,end)].*[repmat(lambda1, nb_of_sat-1, 1); repmat(lambda2, nb_of_sat-1, 1)];
 
 % Init
 delta_X = 0; 
 delta_X_new = 1;
 
-while norm(delta_X_new) > 1e-3 % Convergence criteria
-
+i = 1
+while norm(delta_X_new) > 1e-3 % Convergence criteria % 1e-3
+    
+    disp("new Iteration");
     % Compute ranges related to the rover
-    rho_sat_rover = compute_range_sat(x_rover, x_k); 
     rho_base_rover = norm(x_b-x_rover);
-
+    rho_sat_rover = compute_range_sat(x_rover, x_k);
+    
+    
     rho_diff = rho_base_master-rho_base_rover-rho_sat_master+rho_sat_rover;
 
     % Conpute A and l'
     l_r = phase_range - ambiguity_range - [rho_diff; rho_diff];
-    A = repmat(((x_b-x_rover)/rho_base_rover) - (x_k-x_rover)./rho_sat_rover, 2,1);
+    u_base_rover = (x_b-x_rover)/rho_base_rover;
+    u_sat_rover =  (x_k-x_rover)./rho_sat_rover;
+    A = repmat(u_base_rover - u_sat_rover, 2,1);
 
     N = A'*P*A;
     b = A'*P*l_r;
 
     delta_X_new = N\b;
-    delta_X = delta_X + delta_X_new
-    x_rover = x_rover + delta_X';
+    delta_X = delta_X + delta_X_new;
+    x_rover = x_rover + delta_X'
     
     %disp(inv(N))
+    i = i+1;
+    %if i > 100000
+    %    break;
+    %end
 end
-
+%%}
+x_rover
 end
     
     
