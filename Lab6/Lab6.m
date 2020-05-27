@@ -90,6 +90,10 @@ ambiguity_matrix(1,:,137);
 %accumulator_matrix
 ambiguities_matrix
 
+%% Lab 6.C
+
+
+
 %% Plot
 figure(1);
 plot(reshape(int_ambiguity_matrix(:,1,:), [7,137])');
