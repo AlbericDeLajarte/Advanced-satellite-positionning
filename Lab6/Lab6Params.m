@@ -12,3 +12,6 @@ c = 299792458;  % Speed of light  [m/s]
 std_vec = [0.5 0.5 0.01 0.01];
 lambda1 = c/F1;
 lambda2 = c/F2;
+
+f1 = 154;
+f2= 115;

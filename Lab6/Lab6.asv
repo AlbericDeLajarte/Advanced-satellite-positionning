@@ -19,9 +19,7 @@ nb_of_epochs = length(master_obs)/nb_of_sat;
 nb_of_meas = 4; % code and phase, for 2 frequencies
 
 DD_matrix = zeros(nb_of_sat-1, nb_of_meas, nb_of_epochs);
-%ambiguity_matrix = zeros(nb_of_sat-1, 2, nb_of_epochs); %probably not
-%useful
-float_ambiguity_matrix = zeros(nb_of_sat-1, 2, nb_of_epochs);
+ambiguity_matrix = zeros(nb_of_sat-1, 2, nb_of_epochs);
 int_ambiguity_matrix = zeros(nb_of_sat-1, 2, nb_of_epochs);
 WL_IF_ambiguity_matrix = zeros(nb_of_sat-1, 2, nb_of_epochs);
 Iono_delay_matrix = zeros(nb_of_sat-1, nb_of_epochs);
@@ -43,12 +41,12 @@ for epoch = 1:nb_of_epochs%1 %nb_of_epochs
         DD_matrix(k, :, epoch) = dd_epoch;
         [N, b] = compute_normals(dd_epoch');
 
-        %ambiguity_matrix(k,:,epoch) = N\b; % probably not useful       
+        ambiguity_matrix(k,:,epoch) = N\b; 
+        
         accumulator_matrix(k).N = accumulator_matrix(k).N + N;
         accumulator_matrix(k).b = accumulator_matrix(k).b + b;
         
         ambig = accumulator_matrix(k).N\accumulator_matrix(k).b;
-        float_ambiguity_matrix(k,:,epoch) = ambig';
         
         % Compute Wide Lane and Ionofree ambiguity 
         WL_IF_ambiguity_matrix(k,:,epoch) = [f2*ambig(1) - f1*ambig(2), ambig(1) - ambig(2)];
@@ -63,30 +61,67 @@ for epoch = 1:nb_of_epochs%1 %nb_of_epochs
         % Compute Ionosphere delay
         Iono_delay_matrix(k, epoch) = (dd_epoch(3)-dd_epoch(4) - (c/F1)*int_ambiguity_matrix(k,1,epoch) + (c/F2)*int_ambiguity_matrix(k,2,epoch))/((f1^2/f2^2)-1);
 
-    end  
+    end
+   
 end
 
+ambiguities_matrix = zeros(nb_of_sat-1, 2);
+int_N1_N2 = zeros(nb_of_sat-1, 2);
+for k = 1:nb_of_sat-1
+    ambig = accumulator_matrix(k).N\accumulator_matrix(k).b;
+    ambiguities_matrix(k,1) = ambig(1);
+    ambiguities_matrix(k,2) = ambig(2);
+    
+    ambig = accumulator_matrix(k).N\accumulator_matrix(k).b;
+        
+    % Compute Wide Lane and Ionofree ambiguity 
+    last_WL_IF = [f2*ambig(1) - f1*ambig(2), ambig(1) - ambig(2)];
 
+    % Compute integer ambiguity
+    K1 = round(last_WL_IF);
+    K2 = round(last_WL_IF);
+
+    int_N1_N2(k,2)= round((f2*K1-K2)/(f1-f2));
+    int_N1 = K1 + int_N1_N2(k,2;
+        
+end
 %% Self control:
-format long
-% Double differences: (LAB A)
 DD_matrix(1,:,1);
-% N1, N2, WL accumulated over all epochs for each pair of satellites: (LAB B)
-float_ambiguity_matrix(:,:,nb_of_epochs)
-WL_IF_ambiguity_matrix(:,2,nb_of_epochs)
-
-%% Lab 6.C
-
-
+% N1, N2 accumulated over all epochs for each pair of satellites: 
+ambiguities_matrix
+int_N
 
 %% Plot
-fig_nb = 1;
-fig_nb = plot_ambiguities_evolution(int_ambiguity_matrix, WL_IF_ambiguity_matrix, fig_nb);
-fig_nb = plot_ionosphere_evolution(Iono_delay_matrix, fig_nb);
+%{
+figure(1);
+plot(reshape(int_ambiguity_matrix(:,1,:), [7,137])');
+legend(string(all_sats_nb(find(all_sats_nb~=base_sat_nb))))
+title("Integer ambiguity of double differenced over time for E1 frequency")
+xlabel("Epoch")
+ylabel("Ambiguity")
 
-%% LAB C:
-[ephm, info, ~] = 
+figure(2);
+plot(reshape(int_ambiguity_matrix(:,2,:), [7,137])');
+legend(string(all_sats_nb(find(all_sats_nb~=base_sat_nb))))
+title("Integer ambiguity of double differenced over time for E2 frequency")
+xlabel("Epoch")
+ylabel("Ambiguity")
 
+figure(3);
+plot(Iono_delay_matrix');
+legend(string(all_sats_nb(find(all_sats_nb~=base_sat_nb))))
+title("Ionosphere delay over time")
+xlabel("Epoch")
+ylabel("Ionosphere delay[m]")
 
+figure(4);
+reshaped_matrix(:,1,1) = (reshape(WL_IF_ambiguity_matrix(6,1,:), [1,137])').*(F2/c);
+plot(reshaped_matrix);
+%plot(reshape(WL_IF_ambiguity_matrix(6,1,:), [1,137])');
+%legend(string(all_sats_nb(find(all_sats_nb~=base_sat_nb))))
+title("Wide Lane ambiguity evolution")
+xlabel("Epoch")
+ylabel("Wide Lane ambiguity[cycles]")
+%}
 end
 
