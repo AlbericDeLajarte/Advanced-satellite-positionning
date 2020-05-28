@@ -5,7 +5,8 @@ function [r, b] = bancroft(r_k, P_k)
 
 %% Construction of matrices B and alpha
 B = [r_k, P_k]; % k x 4 matrix
-[k, ~] = size(r_k); 
+
+[k, ~] = size(r_k);
 new_B = zeros(k,4);
 e = ones([1, k])';
 alpha = zeros(k,1); % k x 1  matrix

@@ -1,4 +1,4 @@
-function [r, b, corrected_ecef, corrected_pseudoranges] = bancroft_approach(tow, sat_nums, we, pseudoranges)
+function [r, b, corrected_ecef, corrected_pseudoranges] = bancroft_approach(tow, sat_nums, we, pseudoranges, file)
 %{
  This function computes the coordinates of a receiver given a certain nb of satellite
  ephemerides and corresponding pseudoranges, using the bancroft approach
@@ -14,7 +14,8 @@ taus = zeros(1,k);
 taus = pseudoranges/c;
 
 % Read the ephemerides
-[ephm, info, ~] = getrinexephGal();
+%[ephm, info, ~] = getrinexephGal();
+[ephm, info, ~] = getrinexephGal(file);
 ecef_matrix = zeros(k, 3);
 parsed_matrix = zeros(size(ephm,1), k);
 % parsed_ephm  is a len(ephemerides) x k matrix 
@@ -57,16 +58,19 @@ end
 % We can finally correct the pseudoranges: P = P' +c*dtk
 corrected_pseudoranges = pseudoranges + dtks*c;
 
+
 %% Correction for Earth rotation: 
 worst_delay = 0.072; % [s]
 corrected_ecef = zeros(k, 3); %k x 3 matrix
 for i = 1:k
    corrected_ecef(i, :) = correction_Earth_rotation(ecef_matrix(i,:)', worst_delay)'; 
 end
+%{
 disp('ecef without Earth correction = ')
 disp(ecef_matrix)
 disp('ecef corrected with Earth rotation, using worst delay = ')
 disp(corrected_ecef)
+%}
 
 %% Apply Bancroft
 % r is a vector containing receiver coordinates
@@ -79,10 +83,12 @@ for i = 1:k
     delay = range/c;
     corrected_ecef(i, :) = correction_Earth_rotation(ecef_matrix(i,:)', delay)';
 end
+%{
 disp('ecef corrected with Earth rotation, using smaller delay = ')
 disp(corrected_ecef)
+%}
 %% Finally we re-apply Bancroft:
-[r, b] = bancroft(corrected_ecef, corrected_pseudoranges')
+[r, b] = bancroft(corrected_ecef, corrected_pseudoranges');
 
 end
 

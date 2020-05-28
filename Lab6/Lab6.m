@@ -74,8 +74,8 @@ format long
 % Double differences: (LAB A)
 DD_matrix(1,:,1);
 % N1, N2, WL accumulated over all epochs for each pair of satellites: (LAB B)
-float_ambiguity_matrix(:,:,nb_of_epochs)
-WL_IF_ambiguity_matrix(:,2,nb_of_epochs)
+float_ambiguity_matrix(:,:,nb_of_epochs);
+WL_IF_ambiguity_matrix(:,2,nb_of_epochs);
 
 %% Lab 6.C
 
@@ -89,23 +89,26 @@ fig_nb = plot_ionosphere_evolution(Iono_delay_matrix, fig_nb);
 %}
 %% LAB C:
 
+% Position of satellites
+[x_k_master, x_b_master, pos_master] = find_sat_pos(master_obs)
+[x_k_rover, x_b_rover, pos_rover] = find_sat_pos(rover_obs)
+
 % Position of rover and master
 x_master = [4367900.641   502906.393  4605656.413];
-x_rover = x_master; % Could be initialized with Absolute positioning from Lab2
+x_rover = x_master; % pos_rover'; %x_master; % Could be initialized with Absolute positioning from Lab2
 
 % Constant ranges related to the fixed master
-[x_k_master, x_b_master] = find_sat_pos(master_obs)
-[x_k_rover, x_b_rover] = find_sat_pos(rover_obs)
-
-rho_base_master = norm(x_b_master-x_master);
-rho_sat_master = compute_range_sat(x_master, x_k_master);
+rho_base_master = norm(x_master-x_b_master);
+rhos_sat_master = compute_range_sat(x_master, x_k_master);
 
 % Constant weight matrix
 %P =  diag(2*ones((nb_of_sat-1)*2, 1))+ 2*ones((nb_of_sat-1)*2) ;
-P = eye(14);
+P =  (2*eye((nb_of_sat-1)*2) + 2*ones((nb_of_sat-1)*2, (nb_of_sat-1)*2));
+%P = eye(14);
 
 % Compute constant terms of the l' vector
-phase_range = [DD_matrix(:, 3, end);DD_matrix(:, 4, end)];
+% Concatenate the dd matrix for frequency 1 andfor frequency 2. 
+phase_range = [DD_matrix(:, 3, end); DD_matrix(:, 4, end)];
 % We multiply ambiguities by wavelength
 ambiguity_range = [int_ambiguity_matrix(:,1,end); int_ambiguity_matrix(:,2,end)].*[repmat(lambda1, nb_of_sat-1, 1); repmat(lambda2, nb_of_sat-1, 1)];
 
@@ -113,38 +116,40 @@ ambiguity_range = [int_ambiguity_matrix(:,1,end); int_ambiguity_matrix(:,2,end)]
 delta_X = 0; 
 delta_X_new = 1;
 
+
 i = 1;
-while norm(delta_X_new) > 1e-3 % Convergence criteria % 1e-3
+disp("Initial coordinates");
+x_rover 
+while norm(delta_X_new) > 1e-5 % Convergence criteria % 1e-3
     
     disp("new Iteration");
     % Compute ranges related to the rover
-    rho_base_rover = norm(x_b_rover-x_rover);
-    rho_sat_rover = compute_range_sat(x_rover, x_k_rover);
-    
-    
-    rho_diff = rho_base_master-rho_base_rover-rho_sat_master+rho_sat_rover;
-
-    % Conpute A and l'
-    l_r = phase_range - ambiguity_range - [rho_diff; rho_diff];
-    u_base_rover = (x_b_rover-x_rover)/rho_base_rover;
-    u_sat_rover =  (x_k_rover-x_rover)./rho_sat_rover;
-    A = repmat(u_base_rover - u_sat_rover, 2,1);
+    rho_base_rover = norm(x_rover-x_b_rover);
+    rhos_sat_rover = compute_range_sat(x_rover,x_k_rover);
+     
+    rhos_diff = rho_base_master-rho_base_rover-rhos_sat_master+rhos_sat_rover;
+    % Construct A and l'
+    l_r = phase_range - ambiguity_range - [rhos_diff; rhos_diff];
+    u_sat_rover =  -(x_k_rover-x_rover)./rhos_sat_rover;
+    u_base_rover = -(x_b_rover-x_rover)/rho_base_rover;
+    A = repmat(u_sat_rover - u_base_rover, 2,1);
 
     N = A'*P*A;
     b = A'*P*l_r;
 
     delta_X_new = N\b;
-    delta_X = delta_X + delta_X_new;
-    x_rover = x_rover + delta_X';
+    x_rover = x_rover + delta_X_new'
+
+    
+    %delta_X = delta_X + delta_X_new
     
     %disp(inv(N))
-    i = i+1;
-    if i > 100000
-        break;
-    end
+    
 end
-%%}
+%}
 x_rover
+% Distance to master
+baseline = norm(x_master-x_rover)
 end
     
     

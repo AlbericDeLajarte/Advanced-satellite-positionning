@@ -16,4 +16,7 @@ lambda2 = c/F2;
 f1 = 154;
 f2= 115;
 
+% PART C:
 we = 7292115e-11; % [rad/s]
+worst_delay = 0.072; % [s]
+
