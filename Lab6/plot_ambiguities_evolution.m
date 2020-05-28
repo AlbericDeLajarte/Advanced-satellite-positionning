@@ -21,7 +21,7 @@ i = i+1;
 
 figure(i);
 reshaped_matrix(:,1,1) = (reshape(WL_IF_ambiguity_matrix(6,1,:), [1,137])').*(F2/c);
-plot(reshaped_matrix);
+plot(reshaped_matrix, 'o');
 %plot(reshape(WL_IF_ambiguity_matrix(6,1,:), [1,137])');
 %legend(string(all_sats_nb(find(all_sats_nb~=base_sat_nb))))
 title("Wide Lane ambiguity evolution")

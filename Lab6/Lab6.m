@@ -55,7 +55,7 @@ for epoch = 1:nb_of_epochs%1 %nb_of_epochs
         % Compute Wide Lane and Ionofree ambiguity 
         WL_IF_ambiguity_matrix(k,:,epoch) = [f2*ambig(1) - f1*ambig(2), ambig(1) - ambig(2)];
         
-        % Compute integer ambiguity
+        % Compute integer ambiguity using Clyde Goad method
         K1 = round(WL_IF_ambiguity_matrix(k,2,epoch));
         K2 = round(WL_IF_ambiguity_matrix(k,1,epoch));
         
@@ -72,11 +72,11 @@ end
 %% Self control:
 format long
 % Double differences: (LAB A)
-DD_matrix(1,:,1);
+DD_matrix(1,:,1)
 % N1, N2, WL accumulated over all epochs for each pair of satellites: (LAB B)
-float_ambiguity_matrix(:,:,nb_of_epochs);
-WL_IF_ambiguity_matrix(:,2,nb_of_epochs);
-
+float_ambiguity_matrix(:,:,nb_of_epochs)
+WL_IF_ambiguity_matrix(:,2,nb_of_epochs)
+int_ambiguity_matrix(:,:,nb_of_epochs)
 %% Lab 6.C
 
 
@@ -87,6 +87,7 @@ fig_nb = 1;
 fig_nb = plot_ambiguities_evolution(int_ambiguity_matrix, WL_IF_ambiguity_matrix, fig_nb);
 fig_nb = plot_ionosphere_evolution(Iono_delay_matrix, fig_nb);
 %}
+
 %% LAB C:
 
 % Position of satellites
@@ -140,6 +141,10 @@ while norm(delta_X_new) > 1e-5 % Convergence criteria % 1e-3
     delta_X_new = N\b;
     x_rover = x_rover + delta_X_new'
 
+    % Self control:
+    disp("self control");
+    v_1 = A*delta_X_new + l_r
+    v_2 = l_r
     
     %delta_X = delta_X + delta_X_new
     
