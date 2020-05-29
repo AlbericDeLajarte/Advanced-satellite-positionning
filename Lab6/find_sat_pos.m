@@ -1,4 +1,4 @@
-function [x_k, x_b, r_corrected]= find_sat_pos(obs)
+function [x_k, x_b, r_corrected]= find_sat_pos(obs, base_sat_nb)
 
 Lab6Params;
 
@@ -30,7 +30,8 @@ r_corrected = r + deltas(1:3);
 
 
 for k = 1:nb_of_sat
-    if k==base_sat_nb
+    sat_k = all_sats_nb(k);
+    if sat_k==base_sat_nb
         x_b = corrected_ecef(k,:);
     else
         x_k = [x_k; corrected_ecef(k,:)];

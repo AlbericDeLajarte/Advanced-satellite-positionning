@@ -1,7 +1,7 @@
 
 all_sats_nb = [2, 3, 5, 8, 11, 12, 24, 25];
-base_sat_nb = 3; % assigned base satellite 
-sats_nb = all_sats_nb(all_sats_nb~=base_sat_nb);
+%base_sat_nb = 3; % assigned base satellite 
+%sats_nb = all_sats_nb(all_sats_nb~=base_sat_nb);
 file_labels = ["TOW", "PRN", "CodeE1", "CodeE5a", "PhaseE1", "PhaseE5a"]; % datam and datar files format
 
 % https://galileognss.eu/galileo-frequency-bands/

@@ -1,4 +1,4 @@
-function [] = Lab6()
+function [] = Lab6(base_sat)
 %% Load parameters and files
 Lab6Params;
 addpath(genpath(pwd))
@@ -8,6 +8,10 @@ master_obs = load('datam.mat');
 master_obs = master_obs.datam;
 rover_obs = load('datar.mat');
 rover_obs = rover_obs.datar;
+
+base_sat_nb = base_sat; % assigned base satellite 
+sats_nb = all_sats_nb(all_sats_nb~=base_sat_nb);
+
 
 %% Conversion of phase measurement from [cycles] to [m]
 master_obs(:, 5:6) = master_obs(:, 5:6).*[c/F1, c/F2];
@@ -91,12 +95,12 @@ fig_nb = plot_ionosphere_evolution(Iono_delay_matrix, fig_nb);
 %% LAB C:
 
 % Position of satellites
-[x_k_master, x_b_master, pos_master] = find_sat_pos(master_obs)
-[x_k_rover, x_b_rover, pos_rover] = find_sat_pos(rover_obs)
+[x_k_master, x_b_master, pos_master] = find_sat_pos(master_obs, base_sat_nb)
+[x_k_rover, x_b_rover, pos_rover] = find_sat_pos(rover_obs, base_sat_nb)
 
 % Position of rover and master
 x_master = [4367900.641   502906.393  4605656.413];
-x_rover = x_master; % pos_rover'; %x_master; % Could be initialized with Absolute positioning from Lab2
+x_rover =  pos_rover'; % x_master; % Could be initialized with Absolute positioning from Lab2
 
 % Constant ranges related to the fixed master
 rho_base_master = norm(x_master-x_b_master);
