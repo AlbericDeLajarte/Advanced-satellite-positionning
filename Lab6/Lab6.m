@@ -1,4 +1,14 @@
 function [] = Lab6(base_sat)
+%{
+    This function is the main routine to solve all the lab. That is:
+    Part A: Formation of double-differences of code & phase observations on two freq.
+    Part B: Geometry-free ambiguity resolution (and ionosphere variation)
+    Part C: Baseline-coordinates determination 
+    
+    Arguments:
+    - base_sat: the base satellite number
+%}
+
 %% Load parameters and files
 Lab6Params;
 addpath(genpath(pwd))
@@ -41,9 +51,12 @@ for epoch = 1:nb_of_epochs
     for k = 1:nb_of_sat-1 % iteration over all k, k != b
         sat_k = sats_nb(k); 
         
+        % Compute double differences
         dd_epoch = compute_double_diff(base_sat_nb, sat_k, master_obs, rover_obs, epoch);
         DD_matrix(k, :, epoch) = dd_epoch;
-        [N, b] = compute_normals(dd_epoch');
+        
+        % Remove influence of geometrical range rho
+        [N, b] = remove_rho_influence(dd_epoch');
         
         % Accumulation
         accumulator_matrix(k).N = accumulator_matrix(k).N + N;
@@ -70,14 +83,14 @@ end
 
 %% Self control:
 format long
-fprintf("Double differences with satellite 2, 1st epoch\n: ");
+fprintf("Double differences with satellite 2, 1st epoch:\n");
 disp(DD_matrix(1,:,1));
 % N1, N2, WL accumulated over all epochs for each pair of satellites: (LAB B)
-fprintf("Non fixed ambiguities at last epoch\n: ");
+fprintf("Non fixed ambiguities at last epoch:\n ");
 disp(float_ambiguity_matrix(:,:,nb_of_epochs));
-fprintf("Wide-Lane ambiguities at last epoch\n: ");
+fprintf("Wide-Lane ambiguities at last epoch:\n ");
 disp(WL_IF_ambiguity_matrix(:,2,nb_of_epochs));
-fprintf("Fixed ambiguities at last epoch: ");
+fprintf("Fixed ambiguities at last epoch:\n ");
 disp(int_ambiguity_matrix(:,:,nb_of_epochs));
 
 

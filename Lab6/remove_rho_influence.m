@@ -1,4 +1,10 @@
-function [reduced_N, reduced_b] = compute_normals(dd)
+function [reduced_N, reduced_b] = remove_rho_influence(dd)
+%{
+    This function computes the reduced form of matrix A and 
+    the matrix of unknowns dd.
+    Arguments:
+    - dd: (4x1) vector of the double differenced values of code and phase, for 2 frequ.
+%}
 
 Lab6Params;
 
@@ -26,8 +32,4 @@ b2 = b(2:3,1);
 % Construct modified N and modified b
 reduced_N = (-C/A)*B + D; 
 reduced_b = b2 - (C/A)*b1; %2x1 vector
-
-% Step 3 : least square solution over one epoch
-%ambiguity_vector = new_N\new_b;
-
 
