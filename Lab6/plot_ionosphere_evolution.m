@@ -1,12 +1,14 @@
-function [i] = plot_ionosphere_evolution(Iono_delay_matrix,i)
+function [fig_nb] = plot_ionosphere_evolution(Iono_delay_matrix,sats_nb,fig_nb)
 
 Lab6Params;
 
-figure(i);
-plot(Iono_delay_matrix');
-legend(string(all_sats_nb(find(all_sats_nb~=base_sat_nb))))
-title("Ionosphere delay over time")
-xlabel("Epoch")
-ylabel("Ionosphere delay[m]")
-
-i = i+1;
+for k = 1:length(sats_nb)
+    figure(fig_nb);
+    fprintf("sat nb %x\n'", k)
+    plot(Iono_delay_matrix(k,:)', 'o');
+    %legend(string(all_sats_nb(find(all_sats_nb~=base_sat_nb))))
+    title(strcat("Ionosphere delay over time for satellite ",string(sats_nb(k))))
+    xlabel("Epoch")
+    ylabel("Ionosphere delay[m]")
+    fig_nb = fig_nb+1;
+end
