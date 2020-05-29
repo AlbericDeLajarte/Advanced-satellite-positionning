@@ -1,5 +1,8 @@
 function [fig_nb] = plot_WL_and_ionosphere_evolution(WL_IF_ambiguity_matrix,Iono_delay_matrix,sats_nb,base_sat_nb,fig_nb)
-
+%{
+    This function plots the evolutions of the Wide Lane ambiguities, and
+    the Ionospheric delay, for each pair of satellite b-k, over all epochs.
+%}
 for k = 1:length(sats_nb)
     figure(fig_nb);
     subplot(2,1,1);
@@ -17,4 +20,5 @@ for k = 1:length(sats_nb)
     ylabel("Ionosphere delay[m]")
     grid on;
     fig_nb = fig_nb+1;
+    hold all
 end
