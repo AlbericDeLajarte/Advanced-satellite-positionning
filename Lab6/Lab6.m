@@ -88,8 +88,9 @@ int_ambiguity_matrix(:,:,nb_of_epochs)
 %% Plot
 
 fig_nb = 1;
-fig_nb = plot_ambiguities_evolution(int_ambiguity_matrix, WL_IF_ambiguity_matrix, all_sats_nb, base_sat_nb,fig_nb);
-fig_nb = plot_ionosphere_evolution(Iono_delay_matrix,sats_nb, fig_nb);
+fig_nb = plot_WL_and_ionosphere_evolution(WL_IF_ambiguity_matrix,Iono_delay_matrix,sats_nb,base_sat_nb,fig_nb);
+%fig_nb = plot_ambiguities_evolution(WL_IF_ambiguity_matrix, sats_nb, base_sat_nb,fig_nb);
+%fig_nb = plot_ionosphere_evolution(Iono_delay_matrix,sats_nb, base_sat_nb,fig_nb);
 
 
 %% LAB C:
@@ -100,7 +101,7 @@ fig_nb = plot_ionosphere_evolution(Iono_delay_matrix,sats_nb, fig_nb);
 
 % Position of rover and master
 x_master = [4367900.641   502906.393  4605656.413];
-x_rover = pos_rover'; x_master; % % Could be initialized with Absolute positioning from Lab2
+x_rover = x_master; % pos_rover'; % % Could be initialized with Absolute positioning from Lab2
 
 % Constant ranges related to the fixed master
 rho_base_master = norm(x_master-x_b_master);
@@ -123,9 +124,12 @@ delta_X_new = 1;
 
 nb_iter = 0;
 disp("Initial coordinates");
-x_rover 
+
 while norm(delta_X_new) > 1e-5 % Convergence criteria % 1e-3
     
+    x_rover
+    delta_X_new
+    norm(x_master-x_rover)
     disp("new Iteration");
     % Compute ranges related to the rover
     rho_base_rover = norm(x_rover-x_b_rover);
@@ -142,7 +146,7 @@ while norm(delta_X_new) > 1e-5 % Convergence criteria % 1e-3
     b = A'*P*l_r;
 
     delta_X_new = N\b;
-    x_rover = x_rover + delta_X_new'
+    x_rover = x_rover + delta_X_new';
 
     % Self control:
     %{
@@ -155,12 +159,12 @@ while norm(delta_X_new) > 1e-5 % Convergence criteria % 1e-3
     %disp(inv(N))
     
 end
-%}
+
 fprintf("Algo converged after %x iterations\n", nb_iter);
 x_rover
 % Distance to master
 baseline = norm(x_master-x_rover)
 pos_rover' - x_rover
-    
+  
     
 
