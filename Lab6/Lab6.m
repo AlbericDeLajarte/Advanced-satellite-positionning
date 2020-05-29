@@ -122,7 +122,7 @@ delta_X = 0;
 delta_X_new = 1;
 
 
-i = 1;
+nb_iter = 0;
 disp("Initial coordinates");
 x_rover 
 while norm(delta_X_new) > 1e-5 % Convergence criteria % 1e-3
@@ -150,12 +150,13 @@ while norm(delta_X_new) > 1e-5 % Convergence criteria % 1e-3
     v_1 = A*delta_X_new + l_r
     v_2 = l_r
     
-    %delta_X = delta_X + delta_X_new
+    nb_iter = nb_iter + 1;
     
     %disp(inv(N))
     
 end
 %}
+fprintf("Algo converged after %x iterations\n", nb_iter);
 x_rover
 % Distance to master
 baseline = norm(x_master-x_rover)
